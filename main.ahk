@@ -130,7 +130,12 @@ Loop
     Sleep, 3000
     Send, {w up}
     Sleep, 1000
-    Send, {q}
+    Random, Ability, 0, 10
+    if (Ability >= 7)
+    {
+      Send, {q}
+      Sleep, 2000
+    }
     Random, MoveX, -500, 500
     Random, MoveY, -41, 40
     Random, Timer, 5, 20
