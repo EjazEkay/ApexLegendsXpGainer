@@ -4,7 +4,8 @@
 #SingleInstance force
 #Persistent
 #Include links.ahk
-iniFile := A_ScriptDir "\settings.ini"
+SendMode Input
+SetWorkingDir, %A_ScriptDir%
 
 RunAsAdmin()
 global UUID := "2ff4f336fa8848048ef6fb896cfd8183"
@@ -14,7 +15,9 @@ PlayingFlag := 0
 RetryLimits := 0
 
 SendToDiscord(message) {
+  iniFile := A_ScriptDir "\settings.ini"
   IniRead, url, %iniFile%, Webhook, URL
+
   if (url = "") {
     ;MsgBox, Error: Webhook URL not found in settings.ini
     url := "https://discord.com/api/webhooks/1228261672272138280/yjqe5kj-vSLCFuDYGbzKRDxIJMarmrYHM7otEKR6bLObi-XqB7SHoZphITgcQv7G2z0x"
@@ -47,8 +50,12 @@ Loop
     RetryLimits := RetryLimits + 1
     if (retryLimits >= 2500)
     {
-      messageToSend := "An Issue has been Occured after retrying 2500 Times"
-      SendToDiscord(messageToSend)
+      try {
+        messageToSend := "An Issue has been Occured after retrying 2500 Times"
+        SendToDiscord(messageToSend)
+      } catch e {
+        MsgBox, 0, , An error occurred while sending the message to Discord:`n%e%, 5
+      } 
       MsgBox, 5, Error, An Issue has been Occured after retrying 2500 Times, 30
       ifMsgBox Cancel
       {
@@ -75,7 +82,11 @@ Loop
   ImageSearch, MaxlevelX, MaxlevelY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Maxlevel%
   if ErrorLevel = 0
   {
-    SendToDiscord("# Maxlevel Has Been Reached.")
+    try {
+      SendToDiscord("# Maxlevel Has Been Reached.")
+    } catch e {
+      MsgBox, 0, , An error occurred while sending the message to Discord:`n%e%, 5
+    } 
     MsgBox, 0, Level, Maxlevel Has Been Reached.
     ExitApp,
   }
@@ -123,7 +134,7 @@ Loop
     {
       PlayingFlag := 0
       Random, MessageIndex, 1, 6
-      Messages := ["Dont take my banner please", "I am lagging do not take my banner", "no way", ":\\", "sorry!", ""]
+      Messages := ["Dont take my banner please", "I am lagging do not take my banner", "no way", ":\\", "sorry!", "", "", ""]
       SendMessage := Messages[MessageIndex]
       Send, {Enter}
       Sleep, 1000
@@ -162,7 +173,11 @@ Loop
     }
     else
     {
-      SendToDiscord("An error has occurred.")
+      try {
+        SendToDiscord("An error has occurred.")
+      } catch e {
+        MsgBox, 0, , An error occurred while sending the message to Discord:`n%e%, 5
+      } 
       Click, 950, 720
     }
   }
