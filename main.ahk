@@ -13,6 +13,7 @@ HideProcess()
 
 PlayingFlag := 0
 RetryLimits := 0
+ErrorFlag := 0
 
 SendToDiscord(message) {
   iniFile := A_ScriptDir "\settings.ini"
@@ -48,6 +49,7 @@ Loop
   {
     Send, {Space}
     RetryLimits := RetryLimits + 1
+    ErrorFlag := 0
     if (retryLimits >= 2500)
     {
       try {
@@ -173,11 +175,16 @@ Loop
     }
     else
     {
-      try {
-        SendToDiscord("An error has occurred.")
-      } catch e {
-        MsgBox, 0, , An error occurred while sending the message to Discord:`n%e%, 5
-      } 
+      if (ErrorFlag == 0) {
+        try {
+          ErrorFlag := 1
+          SendToDiscord("An error has occurred.")
+        } catch e {
+          ErrorFlag := 1
+          MsgBox, 0, , An error occurred while sending the message to Discord:`n%e%, 5
+        } 
+      }
+      Sleep, 2000
       Click, 950, 720
     }
   }
