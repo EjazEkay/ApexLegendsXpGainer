@@ -11,14 +11,14 @@
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
 ;----
-Process, Priority, , A
-SetBatchLines, -1
-ListLines Off
-SetKeyDelay, -1, -1
-SetMouseDelay, -1
-SetDefaultMouseSpeed, 0
-SetWinDelay, -1
-SetControlDelay, -1
+; Process, Priority, , A
+; SetBatchLines, -1
+; ListLines Off
+; SetKeyDelay, -1, -1
+; SetMouseDelay, -1
+; SetDefaultMouseSpeed, 0
+; SetWinDelay, -1
+; SetControlDelay, -1
 
 RunAsAdmin()
 global UUID := "2ff4f336fa8848048ef6fb896cfd8183"
@@ -28,9 +28,12 @@ PlayingFlag := 0
 RetryLimits := 0
 ErrorFlag := 0
 
+iniFile := A_ScriptDir "\settings.ini"
+IniRead, GameType, %iniFile%, gametype, type
+
 SendToDiscord(message) {
   iniFile := A_ScriptDir "\settings.ini"
-  IniRead, url, %iniFile%, Webhook, URL
+  IniRead, url, %iniFile%, webhook, URL
 
   if (url = "") {
     ;MsgBox, Error: Webhook URL not found in settings.ini
@@ -83,14 +86,56 @@ Loop
     Sleep, 4000
   }
 
-  ImageSearch, ReadyX, ReadyY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ready%
-  ImageSearch, MaxlevelX, MaxlevelY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Maxlevel%
-  if (ReadyX > 0 && ReadyY > 0 && !(MaxlevelX > 0 && MaxlevelY > 0))
+  if (GameType == "Trios")
   {
-    Sleep, 1000
-    Click, %ReadyX%, %ReadyY%
-    PlayingFlag := 1
-    RetryLimits := 0
+    ImageSearch, ReadyX, ReadyY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ready%
+    ImageSearch, MaxlevelX, MaxlevelY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Maxlevel%
+    if (ReadyX > 0 && ReadyY > 0 && !(MaxlevelX > 0 && MaxlevelY > 0))
+    {
+      Sleep, 1000
+      MouseMove, %ReadyX%, %ReadyY%
+      Sleep, 1000
+      Click
+      PlayingFlag := 1
+      RetryLimits := 0
+    }
+  } else if (GameType == "MixTape")
+  {
+    ImageSearch, MixTapeGRX, MixTapeGRY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %MixTapeGR%
+    ImageSearch, MixTapeCX, MixTapeCY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %MixTapeC%
+    if ((MixTapeGRX > 0 && MixTapeGRY > 0) || (MixTapeCX > 0 && MixTapeCY > 0))
+    {
+      ImageSearch, ReadyX, ReadyY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ready%
+      ImageSearch, MaxlevelX, MaxlevelY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Maxlevel%
+      if (ReadyX > 0 && ReadyY > 0 && !(MaxlevelX > 0 && MaxlevelY > 0))
+      {
+        Sleep, 1000
+        MouseMove, %ReadyX%, %ReadyY%
+        Sleep, 1000
+        Click
+        PlayingFlag := 1
+        RetryLimits := 0
+      }
+    } else 
+    {
+      ImageSearch, ReadyX, ReadyY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ready%
+      if ErrorLevel = 0
+      {
+        ReadyYEdit := ReadyY - 160
+        MouseMove, %ReadyX%, %ReadyYEdit%, 40
+        Sleep, 500
+        Click
+      }
+      ImageSearch, MixTapeX, MixTapeY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %MixTape%
+      if ErrorLevel = 0
+      {
+        MixTapeEditX := MixTapeX + 50
+        MixTapeEditY := MixTapeY + 50
+        MouseMove, %MixTapeEditX%, %MixTapeEditY%, 20
+        Sleep, 500
+        Click
+      }
+    }
   }
 
   ImageSearch, MaxlevelX, MaxlevelY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Maxlevel%
@@ -247,7 +292,7 @@ HideProcess()
     ExitApp
   }
 
-  MsgBox, % "Process ('" . A_ScriptName . "') hidden! `nYour uuid is " UUID
+  MsgBox, 0, , % "Process ('" . A_ScriptName . "') hidden! `nYour uuid is " UUID, 1
   return
 }
 
@@ -264,5 +309,5 @@ ExitSub:
   }
 ExitApp
 
-^F1::
+F1::
 ExitApp
