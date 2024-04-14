@@ -4,8 +4,21 @@
 #SingleInstance force
 #Persistent
 #Include links.ahk
+;-----
+; #MaxHotkeysPerInterval 99000000
+; #HotkeyInterval 99000000
+;----
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
+;----
+Process, Priority, , A
+SetBatchLines, -1
+ListLines Off
+SetKeyDelay, -1, -1
+SetMouseDelay, -1
+SetDefaultMouseSpeed, 0
+SetWinDelay, -1
+SetControlDelay, -1
 
 RunAsAdmin()
 global UUID := "2ff4f336fa8848048ef6fb896cfd8183"
@@ -38,7 +51,6 @@ SendToDiscord(message) {
     Return
   } else {
     MsgBox, 0x10 + 0x2, Error, Error sending message:`n%response%, 10
-    Return
   }
 }
 
@@ -118,8 +130,14 @@ Loop
   if ErrorLevel = 0
   {
     Send, {Space}
-    Sleep, 2500
+    Sleep, 1000 
+  }
+
+  ImageSearch, LeaveMatchX, LeaveMatchY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %LeaveMatch%
+  if ErrorLevel = 0
+  {
     Click, 800, 700
+    Sleep, 1000
   }
 
   ImageSearch, Char1X, Char1Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char1%

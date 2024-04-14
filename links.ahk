@@ -9,6 +9,7 @@ Summary := "images\summary.png"
 General := "images\general.png"
 Alive := "images\alive.png"
 ErrorMsg := "images\error.png"
+LeaveMatch := "images\leavematch.png"
 
 ; Define coordinates & color here
 ; MixtapeX := 1000
