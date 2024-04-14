@@ -4,21 +4,8 @@
 #SingleInstance force
 #Persistent
 #Include links.ahk
-;-----
-; #MaxHotkeysPerInterval 99000000
-; #HotkeyInterval 99000000
-;----
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
-;----
-; Process, Priority, , A
-; SetBatchLines, -1
-; ListLines Off
-; SetKeyDelay, -1, -1
-; SetMouseDelay, -1
-; SetDefaultMouseSpeed, 0
-; SetWinDelay, -1
-; SetControlDelay, -1
 
 RunAsAdmin()
 global UUID := "2ff4f336fa8848048ef6fb896cfd8183"
@@ -247,8 +234,10 @@ Loop
           MsgBox, 0, , An error occurred while sending the message to Discord:`n%e%, 5
         } 
       }
-      Sleep, 2000
-      Click, 950, 720
+      Sleep, 500
+      MouseMove, 950, 720
+      Sleep, 500
+      Click
     }
   }
 }
