@@ -173,14 +173,19 @@ Loop
   }
 
   ImageSearch, Char1X, Char1Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char1%
-  if ErrorLevel = 0
-  {
-    Click, %Char1%, %Char1%
-    Sleep, 1000
+  ImageSearch, Char2X, Char2Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char2%
+  ImageSearch, Char3X, Char3Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char3%
+  if (Char1X > 0 && Char1Y > 0) {
+    Click, %Char1X%, %Char1Y%
+  } else if (Char2X > 0 && Char2Y > 0) {
+    Click, %Char2X%, %Char2Y%
+  } else if (Char3X > 0 && Char3Y > 0) {
+    Click, %Char3X%, %Char3Y%
   }
 
   ImageSearch, AliveX, AliveY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Alive%
-  if ErrorLevel = 0
+  ImageSearch, Alive2X, Alive2Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Alive2%
+  if ((AliveX > 0 && AliveY > 0) || (Alive2X > 0 && Alive2Y > 0))
   {
     if (PlayingFlag == 1)
     {
@@ -213,6 +218,18 @@ Loop
       DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
       Sleep % Timer
     }
+  }
+
+  PixelGetColor, color, %EscX%, %EscY%
+  PixelGetColor, color2, %Esc2X%, %Esc2Y%
+  if (color = EscColor && color2 = Esc2Color) {
+    Click, %EscX%, %EscY%
+  }
+
+  ImageSearch, ShipX, ShipY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ship%
+  if ErrorLevel = 0
+  {
+    Click, %ShipX%, %ShipY%
   }
 
   ImageSearch, ErrorMsgX, ErrorMsgY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %ErrorMsg%
