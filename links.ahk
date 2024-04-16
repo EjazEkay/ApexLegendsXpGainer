@@ -19,10 +19,10 @@ MixTapeC := "images\mixtapec.png"
 Ship := "images\ship.png"
 
 ; Define coordinates & color here
- EscX := 65
- EscY := 999
+ EscX := 80
+ EscY := 970
  EscColor := "0xE1E1E1"
- Esc2X := 100
- Esc2Y := 1000
+ Esc2X := 70
+ Esc2Y := 1016
  Esc2Color := "0xE1E1E1" 
 

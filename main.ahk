@@ -177,10 +177,13 @@ Loop
   ImageSearch, Char3X, Char3Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char3%
   if (Char1X > 0 && Char1Y > 0) {
     Click, %Char1X%, %Char1Y%
+    Sleep, 1000
   } else if (Char2X > 0 && Char2Y > 0) {
     Click, %Char2X%, %Char2Y%
+    Sleep, 1000
   } else if (Char3X > 0 && Char3Y > 0) {
     Click, %Char3X%, %Char3Y%
+    Sleep, 1000
   }
 
   ImageSearch, AliveX, AliveY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Alive%
@@ -222,13 +225,14 @@ Loop
 
   PixelGetColor, color, %EscX%, %EscY%
   PixelGetColor, color2, %Esc2X%, %Esc2Y%
-  if (color = EscColor && color2 = Esc2Color) {
+  if (color = EscColor || color2 = Esc2Color) {
     Click, %EscX%, %EscY%
   }
 
   ImageSearch, ShipX, ShipY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ship%
   if ErrorLevel = 0
   {
+    Sleep, 1000
     Click, %ShipX%, %ShipY%
   }
 
