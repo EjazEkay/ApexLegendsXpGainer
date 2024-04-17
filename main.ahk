@@ -225,8 +225,9 @@ Loop
 
   PixelGetColor, color, %EscX%, %EscY%
   PixelGetColor, color2, %Esc2X%, %Esc2Y%
-  if (color = EscColor || color2 = Esc2Color) {
-    Click, %EscX%, %EscY%
+  ImageSearch, MixTapeX, MixTapeY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %MixTape%
+  if (color = EscColor || color2 = Esc2Color && ErrorLevel != 0) {
+    Send, {Esc}
   }
 
   ImageSearch, ShipX, ShipY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ship%
