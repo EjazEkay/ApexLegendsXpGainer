@@ -231,12 +231,18 @@ Loop
   }
 
   ImageSearch, ShipX, ShipY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ship%
-  if ErrorLevel = 0
+  ImageSearch, Ship2X, Ship2Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ship2%
+  if (ShipX > 0 && ShipY > 0)
   {
     Sleep, 1000
     Click, %ShipX%, %ShipY%
   }
-
+  else if (Ship2X > 0 && Ship2Y > 0) 
+  {
+    Sleep, 1000
+    Click, %Ship2X%, %Ship2Y%
+  }
+  
   ImageSearch, ErrorMsgX, ErrorMsgY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %ErrorMsg%
   if ErrorLevel = 0
   {
