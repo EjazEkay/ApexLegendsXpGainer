@@ -246,6 +246,14 @@ Loop
     Click
   }
 
+  ImageSearch, InfoX, InfoY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Info%
+  if (ErrorLevel = 0) 
+  {
+    Sleep, 500
+    Send, {Esc}
+    Sleep, 500
+  }
+
   ImageSearch, ErrorMsgX, ErrorMsgY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %ErrorMsg%
   if ErrorLevel = 0
   {
