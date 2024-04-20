@@ -17,6 +17,7 @@ MixTape := "images\mixtape.png"
 MixTapeGR := "images\mixtapegr.png"
 MixTapeC := "images\mixtapec.png"
 Ship := "images\ship.png"
+Ship2 := "images\ship2.png"
 
 ; Define coordinates & color here
  EscX := 80
