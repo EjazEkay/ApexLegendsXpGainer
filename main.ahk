@@ -14,7 +14,6 @@ HideProcess()
 PlayingFlag := 0
 RetryLimits := 0
 ErrorFlag := 0
-LegendFlag := 0
 
 iniFile := A_ScriptDir "\settings.ini"
 IniRead, GameType, %iniFile%, gametype, type
@@ -175,22 +174,19 @@ Loop
   }
 
   ImageSearch, Char1X, Char1Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char1%
-  if (ErrorLevel = 0 && LegendFlag == 0) {
+  if (ErrorLevel = 0) {
     Click, %Char1X%, %Char1Y%
-    Sleep, 500
-    LegendFlag := 1
+    Sleep, 3000
   } 
   ImageSearch, Char2X, Char2Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char2%
-  if (ErrorLevel = 0 && LegendFlag == 0) {
+  if (ErrorLevel = 0) {
     Click, %Char2X%, %Char2Y%
-    Sleep, 500
-    LegendFlag := 1
+    Sleep, 3000
   } 
   ImageSearch, Char3X, Char3Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char3%
-  if (ErrorLevel = 0 && LegendFlag == 0) {
+  if (ErrorLevel = 0) {
     Click, %Char3X%, %Char3Y%
-    Sleep, 500
-    LegendFlag := 1
+    Sleep, 3000
   }
 
   ImageSearch, AliveX, AliveY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Alive%
