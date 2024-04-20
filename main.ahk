@@ -14,6 +14,7 @@ HideProcess()
 PlayingFlag := 0
 RetryLimits := 0
 ErrorFlag := 0
+LegendFlag := 0
 
 iniFile := A_ScriptDir "\settings.ini"
 IniRead, GameType, %iniFile%, gametype, type
@@ -52,6 +53,7 @@ Loop
     Send, {Space}
     RetryLimits := RetryLimits + 1
     ErrorFlag := 0
+    LegendFlag := 0
     if (retryLimits >= 2500)
     {
       try {
@@ -173,23 +175,29 @@ Loop
   }
 
   ImageSearch, Char1X, Char1Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char1%
-  ImageSearch, Char2X, Char2Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char2%
-  ImageSearch, Char3X, Char3Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char3%
-  if ((Char1X > 0 && Char1Y > 0) && !(Char2X > 0 && Char2Y > 0) && !(Char3X > 0 && Char3Y > 0)) {
+  if (ErrorLevel = 0 && LegendFlag = 0) {
     Click, %Char1X%, %Char1Y%
-    Sleep, 3000
-  } else if (!(Char1X > 0 && Char1Y > 0) && (Char2X > 0 && Char2Y > 0) && !(Char3X > 0 && Char3Y > 0)) {
+    Sleep, 500
+    LegendFlag := 1
+  } 
+  ImageSearch, Char2X, Char2Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char2%
+  if (ErrorLevel = 0 && LegendFlag = 0) {
     Click, %Char2X%, %Char2Y%
-    Sleep, 3000
-  } else if (!(Char1X > 0 && Char1Y > 0) && !(Char2X > 0 && Char2Y > 0) && (Char3X > 0 && Char3Y > 0)) {
+    Sleep, 500
+    LegendFlag := 1
+  } 
+  ImageSearch, Char3X, Char3Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char3%
+  if (ErrorLevel = 0 && LegendFlag = 0) {
     Click, %Char3X%, %Char3Y%
-    Sleep, 3000
+    Sleep, 500
+    LegendFlag := 1
   }
 
   ImageSearch, AliveX, AliveY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Alive%
   ImageSearch, Alive2X, Alive2Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Alive2%
   if ((AliveX > 0 && AliveY > 0) || (Alive2X > 0 && Alive2Y > 0))
   {
+    LegendFlag := 0
     if (PlayingFlag == 1 && GameType == "Trios")
     {
       PlayingFlag := 0
