@@ -190,7 +190,7 @@ Loop
   ImageSearch, Alive2X, Alive2Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Alive2%
   if ((AliveX > 0 && AliveY > 0) || (Alive2X > 0 && Alive2Y > 0))
   {
-    if (PlayingFlag == 1)
+    if (PlayingFlag == 1 && GameType == "Trios")
     {
       PlayingFlag := 0
       Random, MessageIndex, 1, 6
