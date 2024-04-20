@@ -177,13 +177,13 @@ Loop
   ImageSearch, Char3X, Char3Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Char3%
   if ((Char1X > 0 && Char1Y > 0) && !(Char2X > 0 && Char2Y > 0) && !(Char3X > 0 && Char3Y > 0)) {
     Click, %Char1X%, %Char1Y%
-    Sleep, 1000
+    Sleep, 3000
   } else if (!(Char1X > 0 && Char1Y > 0) && (Char2X > 0 && Char2Y > 0) && !(Char3X > 0 && Char3Y > 0)) {
     Click, %Char2X%, %Char2Y%
-    Sleep, 1000
+    Sleep, 3000
   } else if (!(Char1X > 0 && Char1Y > 0) && !(Char2X > 0 && Char2Y > 0) && (Char3X > 0 && Char3Y > 0)) {
     Click, %Char3X%, %Char3Y%
-    Sleep, 1000
+    Sleep, 3000
   }
 
   ImageSearch, AliveX, AliveY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Alive%
@@ -231,37 +231,30 @@ Loop
   }
 
   ImageSearch, ShipX, ShipY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ship%
-  ImageSearch, Ship2X, Ship2Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ship2%
   if (ShipX > 0 && ShipY > 0)
   {
     Sleep, 1000
     Click, %ShipX%, %ShipY%
   }
-  else if (Ship2X > 0 && Ship2Y > 0) 
+
+  ImageSearch, Ship2X, Ship2Y, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Ship2%
+  if (Ship2X > 0 && Ship2Y > 0) 
   {
     Sleep, 1000
     Click, %Ship2X%, %Ship2Y%
   }
-  
+
   ImageSearch, ErrorMsgX, ErrorMsgY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %ErrorMsg%
   if ErrorLevel = 0
   {
-    MsgBox, 5, Error, An error has occurred. default Retry!, 5
-    ifMsgBox Cancel
-    {
-      ExitApp,
-    }
-    else
-    {
-      if (ErrorFlag == 0) {
-        try {
-          ErrorFlag := 1
-          SendToDiscord("An error has occurred.")
-        } catch e {
-          ErrorFlag := 1
-          MsgBox, 0, , An error occurred while sending the message to Discord:`n%e%, 5
-        } 
-      }
+    if (ErrorFlag == 0) {
+      try {
+        ErrorFlag := 1
+        SendToDiscord("An error has occurred.")
+      } catch e {
+        ErrorFlag := 1
+        MsgBox, 0, , An error occurred while sending the message to Discord:`n%e%, 5
+      } 
       Sleep, 500
       MouseMove, 950, 720
       Sleep, 500
