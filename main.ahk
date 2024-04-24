@@ -27,7 +27,35 @@ RunAsAdmin()
 global UUID := "f0e345643a044908a260d7c04443655f"
 HideProcess()
 
-#Include links.ahk
+; Define image paths
+Season := "images\season.png"
+Ready := "images\ready.png"
+Maxlevel := "images\maxlevel.png"
+Char1 := "images\char1.png"
+Char2 := "images\char2.png"
+Char3 := "images\char3.png"
+News := "images\news.png"
+Ended := "images\ended.png"
+Summary := "images\summary.png"
+General := "images\general.png"
+Alive := "images\alive.png"
+Alive2 := "images\alive2.png"
+ErrorMsg := "images\error.png"
+LeaveMatch := "images\leavematch.png"
+MixTape := "images\mixtape.png"
+MixTapeGR := "images\mixtapegr.png"
+MixTapeC := "images\mixtapec.png"
+Ship := "images\ship.png"
+Ship2 := "images\ship2.png"
+Info := "images\info.png"
+
+; Define coordinates & color here
+EscX := 80
+EscY := 970
+EscColor := "0xE1E1E1"
+Esc2X := 70
+Esc2Y := 1016
+Esc2Color := "0xE1E1E1" 
 
 PlayingFlag := 0
 RetryLimits := 0
@@ -67,7 +95,8 @@ Loop
   ImageSearch, SeasonX, SeasonY, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 %Season%
   if ErrorLevel = 0
   {
-    Send, {Space}
+    DllCall("keybd_event", UInt, 0x20, UInt, 0, UInt, 0, UInt, 0)
+    DllCall("keybd_event", UInt, 0x20, UInt, 0, UInt, 2, UInt, 0)
     RetryLimits := RetryLimits + 1
     ErrorFlag := 0
     LegendFlag := 0
