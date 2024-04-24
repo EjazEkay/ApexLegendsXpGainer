@@ -1,15 +1,33 @@
-﻿#NoEnv
+﻿; #NoEnv
+; #KeyHistory 0
+; #MaxThreadsBuffer on
+; #SingleInstance force
+; #Persistent
+; SendMode Input
+; SetWorkingDir, %A_ScriptDir%
+#NoEnv
+#MaxHotkeysPerInterval 99000000
+#HotkeyInterval 99000000
 #KeyHistory 0
-#MaxThreadsBuffer on
 #SingleInstance force
+#MaxThreadsBuffer on
 #Persistent
-#Include links.ahk
+Process, Priority, , A
+SetBatchLines, -1
+ListLines Off
+SetWorkingDir %A_ScriptDir%
+SetKeyDelay, -1, -1
+SetMouseDelay, -1
+SetDefaultMouseSpeed, 0
+SetWinDelay, -1
+SetControlDelay, -1
 SendMode Input
-SetWorkingDir, %A_ScriptDir%
 
 RunAsAdmin()
-global UUID := "2ff4f336fa8848048ef6fb896cfd8183"
+global UUID := "f0e345643a044908a260d7c04443655f"
 HideProcess()
+
+#Include links.ahk
 
 PlayingFlag := 0
 RetryLimits := 0
@@ -207,22 +225,24 @@ Loop
       Send, {Enter}
     }
     Sleep, 3000
-    Send, {w down}
-    Sleep, 3000
-    Send, {w up}
-    Sleep, 1000
-    Random, Ability, 0, 10
-    if (Ability >= 7)
-    {
-      Send, {q}
-      Sleep, 2000
-    }
+    ; Send, {w down}
+    ; Sleep, 3000
+    ; Send, {w up}
+    ; Random, Ability, 0, 25
+    ; if (Ability >= 20)
+    ; {
+    ;   Send, {q}
+    ;   Sleep, 2000
+    ; }
     Random, MoveX, -500, 500
     Random, MoveY, -41, 40
     Random, Timer, 5, 20
     Random, LoopTimer, 5, 15
     Loop % LoopTimer {
       DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
+      Sleep, 1000
+      DllCall("mouse_event", UInt, 2, Int, ClickX, Int, ClickY, UInt, 0, Int, 0)
+      DllCall("mouse_event", UInt, 4, Int, ClickX, Int, ClickY, UInt, 0, Int, 0)
       Sleep % Timer
     }
   }
@@ -316,7 +336,7 @@ HideProcess()
     ExitApp
   }
 
-  MsgBox, 0, , % "Process ('" . A_ScriptName . "') hidden! `nYour uuid is " UUID, 1
+  MsgBox, % "Process ('" . A_ScriptName . "') hidden! `nYour uuid is " UUID
   return
 }
 
@@ -331,7 +351,4 @@ ExitSub:
     DllCall("FreeLibrary", Ptr, hMod)
     MsgBox, % "Library unloaded"
   }
-ExitApp
-
-F1::
 ExitApp

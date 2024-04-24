@@ -1,7 +1,15 @@
-﻿#SingleInstance Force
-#NoEnv
+﻿#NoEnv
+#SingleInstance force
+#MaxThreadsBuffer on
+SendMode Input
 SetWorkingDir %A_ScriptDir%
 SetBatchLines -1
+DetectHiddenWindows On
+SetTitleMatchMode RegEx
+
+RunAsAdmin()
+
+global UUID := "f0e345643a044908a260d7c04443655f"
 
 if !FileExist("settings.ini") {
     MsgBox, 4, Warning!, Couldn't find settings.ini. Do you want to create settings.ini file?, 15
@@ -53,6 +61,51 @@ ButtonUpdateWebhook:
     Run, settings.ini
 ExitApp
 Return
+
+CloseScript(Name) {
+    DetectHiddenWindows On
+    SetTitleMatchMode RegEx
+    IfWinExist, i)%Name%.* ahk_class AutoHotkey
+    {
+        WinClose
+        WinWaitClose, i)%Name%.* ahk_class AutoHotkey, , 2
+        If ErrorLevel
+            return "Unable to close " . Name
+        else
+            return "Closed " . Name
+    }
+    else
+        return Name . " not found"
+}
+
+ActiveMonitorInfo(ByRef X, ByRef Y, ByRef Width, ByRef Height)
+{
+    CoordMode, Mouse, Screen
+    MouseGetPos, mouseX, mouseY
+    SysGet, monCount, MonitorCount
+    Loop %monCount% {
+        SysGet, curMon, Monitor, %a_index%
+        if ( mouseX >= curMonLeft and mouseX <= curMonRight and mouseY >= curMonTop and mouseY <= curMonBottom ) {
+            X := curMonTop
+            y := curMonLeft
+            Height := curMonBottom - curMonTop
+            Width := curMonRight - curMonLeft
+            return
+        }
+    }
+}
+
+RunAsAdmin()
+{
+    Global 0
+IfEqual, A_IsAdmin, 1, Return 0
+
+Loop, %0%
+    params .= A_Space . %A_Index%
+
+DllCall("shell32\ShellExecute" (A_IsUnicode ? "":"A"),uint,0,str,"RunAs",str,(A_IsCompiled ? A_ScriptFullPath : A_AhkPath),str,(A_IsCompiled ? "": """" . A_ScriptFullPath . """" . A_Space) params,str,A_WorkingDir,int,1)
+ExitApp
+}
 
 GuiClose:
 ExitApp
