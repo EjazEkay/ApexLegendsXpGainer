@@ -1,4 +1,4 @@
-Rfr Bot - (Open Source by Larry2018)
+Rfr Bot - (Open Source by Larry2018) - RESOLUTION 1920X1080 Only
 
 Welcome to Rfr Bot! This open-source tool, created by Larry2018.
 
