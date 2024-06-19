@@ -18,12 +18,10 @@ LobbyFunc(activeMode) {
   } Else If (isReady_Button && !isMatch_Type && activeMode) {
     ClickFunction(Ready_ButtonX, Ready_ButtonY - 150, , 1000)
     ClickFunction(Ready_ButtonX + 900, Ready_ButtonY - 200, , 1000)
-    ClickFunction(Ready_ButtonX, Ready_ButtonY, 1, 1000)
   } Else If (isReady_Button && !isMatch_Type && !activeMode) {
     ClickFunction(Ready_ButtonX, Ready_ButtonY, 1, 1000)
   } Else If (isReady_Button && isMatch_Type && !activeMode) {
     ClickFunction(Ready_ButtonX, Ready_ButtonY - 150, , 1000)
     ClickFunction(Ready_ButtonX, Ready_ButtonY - 450, , 1000)
-    ClickFunction(Ready_ButtonX, Ready_ButtonY, 1, 1000)
   }
 }

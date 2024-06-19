@@ -3,7 +3,7 @@
 
 trios := 0
 mixtape := 1
-activeMode := trios
+activeMode := mixtape
 
 ; Main
 Loop, {
