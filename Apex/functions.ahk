@@ -50,7 +50,6 @@ WinSwapFunc(CurrentScreen, TotalScreens) {
 ; MainMenu
 MainMenuFunc() {
   isMcontinue := PixelSearchFunc(McontinueC, McontinueX, McontinueY, McontinueXT, McontinueYL, McontinueXB, McontinueYR, 0)
-
   If isMcontinue
     Return { isMcontinue: isMcontinue }
 
@@ -61,13 +60,11 @@ MainMenuFunc() {
 ; Lobby
 LobbyFunc() {
   isLesc := PixelSearchFunc(LescC, LescX, LescY, LescXT, LescYL, LescXB, LescYR, 0)
-
   If isLesc
     Return { isLesc: isLesc }
 
   isLready := PixelSearchFunc(LreadyC, LreadyX, LreadyY, LreadyXT, LreadyYL, LreadyXB, LreadyYR, 0)
   isLmode := PixelSearchFunc(LmodeC, LmodeX, LmodeY, LmodeXT, LmodeYL, LmodeXB, LmodeYR, 0)
-
   If isLready || isLmode
     Return { isLesc: isLesc, isLready: isLready, isLmode: isLmode, readyX: LreadyX, readyY: LreadyY }
 
@@ -78,10 +75,22 @@ LobbyFunc() {
 ; InGame
 InGameFunc() {
   isIalive := PixelSearchFunc(IaliveC, IaliveX, IaliveY, IaliveXT, IaliveYL, IaliveXB, IaliveYR, 0)
-
   If isIalive
     Return { isIalive: isIalive }
 
   isIreque := PixelSearchFunc(IrequeC, IrequeX, IrequeY, IrequeXT, IrequeYL, IrequeXB, IrequeYR, 0)
-  Return { isIalive: isIalive, isIreque: isIreque }
+  If isIreque
+    Return { isIalive: isIalive, isIreque: isIreque }
+
+  isIgibi := PixelSearchFunc(IgibiC, IgibiX, IgibiY, IgibiXT, IgibiYL, IgibiXB, IgibiYR, 0)
+  If isIgibi
+    Return { isIgibi: isIgibi, gibiX: IgibiX, gibiY: IgibiY }
+
+  isIpathfinder := PixelSearchFunc(IpathfinderC, IpathfinderX, IpathfinderY, IpathfinderXT, IpathfinderYL, IpathfinderXB, IpathfinderYR, 0)
+  If isIpathfinder
+    Return { isIpathfinder: isIpathfinder, pathyX: IpathfinderX, pathyY: IpathfinderY }
+
+  isIwraith := PixelSearchFunc(IwraithC, IwraithX, IwraithY, IwraithXT, IwraithYL, IwraithXB, IwraithYR, 0)
+  If isIwraith
+    Return { isIwraith: isIwraith, wraithX: IwraithX, wraithY: IwraithY }
 }

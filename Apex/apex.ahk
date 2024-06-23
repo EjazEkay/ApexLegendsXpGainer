@@ -10,8 +10,12 @@ Loop, {
   ; Window Swapping
   CurrentScreen := WinSwapFunc(CurrentScreen, TotalScreens)
 
-  ; Main Menu Block
+  ; Pixel Search Functions
   Mainmenu := MainMenuFunc()
+  Lobby := LobbyFunc()
+  InGame := InGameFunc()
+
+  ; Main Menu Block
   If (Mainmenu.isMcontinue) {
     KeysFunc("space")
   } Else If (Mainmenu.isMCinfo) {
@@ -19,8 +23,7 @@ Loop, {
   }
 
   ; Lobby Handling
-  Lobby := LobbyFunc()
-  If (Lobby.isLesc) {
+  If (Lobby.isLesc && !Mainmenu.isMcontinue && !InGame.isIalive) {
     KeysFunc("esc")
   } Else If ((Lobby.isLready && Lobby.isLmode && !GameMode) || (Lobby.isLready && !Lobby.isLmode && GameMode)) {
     ClickFunc(Lobby.readyX, Lobby.readyY, 1, , 1000)
@@ -40,12 +43,17 @@ Loop, {
   }
 
   ; In Game Block
-  InGame := InGameFunc()
   If (InGame.isIalive) {
     KeysFunc("w down", , 2000)
     KeysFunc("w up")
   } Else If (InGame.isIreque) {
     KeysFunc("1")
+  } Else If (InGame.isIgibi) {
+    ClickFunc(InGame.gibiX, InGame.gibiY, 1, 60, 7500)
+  } Else If (InGame.isIpathfinder) {
+    ClickFunc(InGame.pathyX, InGame.pathyY, 1, 60, 7500)
+  } Else If (InGame.isIwraith) {
+    ClickFunc(InGame.wraithX, InGame.wraithY, 1, 60, 7500)
   }
 
   ; Delay

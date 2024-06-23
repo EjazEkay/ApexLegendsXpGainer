@@ -39,14 +39,33 @@ global LcontinueYR := 0
 global LcontinueC := 0xAD1C21
 
 ; InGame
-global IaliveXT := 1380
-global IaliveYL := 976
-global IaliveXB := 1380
-global IaliveYR := 976
-global IaliveC := 0x7C7B7A
+global IaliveXT := 461
+global IaliveYL := 972
+global IaliveXB := 461
+global IaliveYR := 972
+global IaliveC := 0x959595
 
 global IrequeXT := 1919
 global IrequeYL := 5
 global IrequeXB := 1919
 global IrequeYR := 5
 global IrequeC := 0x8BB702
+
+; Legends - Wraith, Gibi, Pathfinder
+global IwraithXT := 1000
+global IwraithYL := 750
+global IwraithXB := 1000
+global IwraithYR := 750
+global IwraithC := 0x0B0506
+
+global IgibiXT := 700
+global IgibiYL := 900
+global IgibiXB := 700
+global IgibiYR := 900
+global IgibiC := 0xE0B2EC
+
+global IpathfinderXT := 900
+global IpathfinderYL := 750
+global IpathfinderXB := 900
+global IpathfinderYR := 750
+global IpathfinderC := 0x233445
