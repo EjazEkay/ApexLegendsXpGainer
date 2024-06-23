@@ -5,15 +5,25 @@
 #Include, coordColors.ahk
 #Include, functions.ahk
 CoordMode, Pixel, Screen
+SetWorkingDir, %A_ScriptDir%
+
+If !FileExist("settings.ahk") {
+  ExitApp
+} Else If (DebugMode < 0 || DebugMode > 1) {
+  MsgBox, 0, Error, Code Error %DebugMode%, 2
+  ExitApp
+}
 
 Loop, {
   ; Window Swapping
-  CurrentScreen := WinSwapFunc(CurrentScreen, TotalScreens)
+  If DebugMode
+    MsgBox, , Debugger - Rfr-bot, GameMode: %GameModeText%, Variation: %Variation%`n`nGivenScreens: %TotalScreens%, NextSwap: %CurrentScreen%`n`nWindowTitle: %Ip%%CurrentScreen%%RemoteName%
+  CurrentScreen := WinSwapFunc(CurrentScreen, TotalScreens, Ip, RemoteName)
 
   ; Pixel Search Functions
-  Mainmenu := MainMenuFunc()
-  Lobby := LobbyFunc()
-  InGame := InGameFunc()
+  Mainmenu := MainMenuFunc(DebugMode)
+  Lobby := LobbyFunc(DebugMode)
+  InGame := InGameFunc(DebugMode)
 
   ; Main Menu Block
   If (Mainmenu.isMcontinue) {
@@ -25,6 +35,25 @@ Loop, {
   ; Lobby Handling
   If (Lobby.isLesc && !Mainmenu.isMcontinue && !InGame.isIalive) {
     KeysFunc("esc")
+  } Else If (Lobby.isLmaxlevel && !Mainmenu.isMcontinue && !InGame.isIalive) {
+    If (CurrentScreen > 1) {
+      TempCurrentScreen := CurrentScreen - 1
+      WindowTitle := Ip . TempCurrentScreen . RemoteName
+    } Else {
+      WindowTitle := Ip . CurrentScreen . RemoteName
+    }
+
+    WinClose, %WindowTitle%
+
+    Try {
+      DiscordUpdation()
+    } Catch e {
+      MsgBox, 1, Execution Error, An error occurred: %e%, 7
+    }
+
+    If StopBot
+      ExitApp
+
   } Else If ((Lobby.isLready && Lobby.isLmode && !GameMode) || (Lobby.isLready && !Lobby.isLmode && GameMode)) {
     ClickFunc(Lobby.readyX, Lobby.readyY, 1, , 1000)
   } Else If ((Lobby.isLready && !Lobby.isLmode && !GameMode) || (Lobby.isLready && !Lobby.isLmode && GameMode)) {
@@ -57,7 +86,9 @@ Loop, {
   }
 
   ; Delay
-  Sleep, 1500
+  If DebugMode
+    MsgBox, 0, Debugger - Rfr-bot,Current Bot Speed : %BotSpeed%`n`nScript Terminate Key : F2
+  Sleep, BotSpeed
 }
 
 F2::

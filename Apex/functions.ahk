@@ -28,14 +28,14 @@ KeysFunc(key, combination := "", delay := 1500) {
 }
 
 ; Window Swapping Function
-WinSwapFunc(CurrentScreen, TotalScreens) {
+WinSwapFunc(CurrentScreen, TotalScreens, Ip, RemoteName) {
   If (TotalScreens > 1) {
-    WindowTitle := "192.168.0." . CurrentScreen . " - Remote Desktop Connection" ; Title : Ip[Counter] - Remote Desktop Connection
+    WindowTitle := Ip . CurrentScreen . RemoteName ; Title : Ip[Counter] - Remote Desktop Connection
 
     If WinExist(WindowTitle) {
       WinActivate
     } Else {
-      MsgBox, 1, Error: Screen not found, The window "%windowTitle%" was not found., 5
+      MsgBox, 0, Error: Screen not found, The window "%windowTitle%" was not found., 5
     }
 
     If (CurrentScreen < TotalScreens) {
@@ -46,51 +46,118 @@ WinSwapFunc(CurrentScreen, TotalScreens) {
   Return 1
 }
 
+; Debug PixelGetColor
+DPGCFunc(ByRef Color, X, Y) {
+  PixelGetColor, Color, X, Y, Fast RGB
+}
+
+; Debugger Function
+DebuggerFunc(name, DX, DY, isVar, isVarC, isVarXT, isVarYL) {
+  DPGCFunc(DC, DX, DY)
+  MsgBox, 0, Debugger - Rfr-bot | %name%, Status: [ %isVar% ] - False : 0 | True : 1`n`nGivenColor: %isVarC%, GotColor: %DC%`n`nCoordX: %DX%, CoordY: %DY%`n`nCoordXT: %isVarXT%, CoordYL: %isVarYL%
+}
+
 ; ------------------------ Pixel Search Functions ------------------------
 ; MainMenu
-MainMenuFunc() {
-  isMcontinue := PixelSearchFunc(McontinueC, McontinueX, McontinueY, McontinueXT, McontinueYL, McontinueXB, McontinueYR, 0)
-  If isMcontinue
-    Return { isMcontinue: isMcontinue }
+MainMenuFunc(DebugMode) {
+  isMcontinue := PixelSearchFunc(McontinueC, McontinueX, McontinueY, McontinueXT, McontinueYL, McontinueXB, McontinueYR, McontinueV)
+  If (!DebugMode) {
+    If isMcontinue
+      Return { isMcontinue: isMcontinue }
+  } Else {
+    DebuggerFunc("MainMenu Continue", McontinueX, McontinueY, isMcontinue, McontinueC, McontinueXT, McontinueYL)
+  }
 
-  isMCinfo := PixelSearchFunc(MCinfoC, MCinfoX, MCinfoY, MCinfoXT, MCinfoYL, MCinfoXB, MCinfoYR, 0)
-  Return { isMcontinue: isMcontinue, isMCinfo: isMCinfo }
+  isMCinfo := PixelSearchFunc(MCinfoC, MCinfoX, MCinfoY, MCinfoXT, MCinfoYL, MCinfoXB, MCinfoYR, MCinfoV)
+  If (!DebugMode) {
+    Return { isMcontinue: isMcontinue, isMCinfo: isMCinfo }
+  } Else {
+    DebuggerFunc("MainMenu Error/Info", MCinfoX, MCinfoY, isMCinfo, MCinfoC, MCinfoXT, MCinfoYL)
+  }
 }
 
 ; Lobby
-LobbyFunc() {
-  isLesc := PixelSearchFunc(LescC, LescX, LescY, LescXT, LescYL, LescXB, LescYR, 0)
-  If isLesc
+LobbyFunc(DebugMode) {
+  isLesc := PixelSearchFunc(LescC, LescX, LescY, LescXT, LescYL, LescXB, LescYR, LescV)
+  If isLesc && !DebugMode
     Return { isLesc: isLesc }
 
-  isLready := PixelSearchFunc(LreadyC, LreadyX, LreadyY, LreadyXT, LreadyYL, LreadyXB, LreadyYR, 0)
-  isLmode := PixelSearchFunc(LmodeC, LmodeX, LmodeY, LmodeXT, LmodeYL, LmodeXB, LmodeYR, 0)
-  If isLready || isLmode
+  ; Debugger
+  If DebugMode
+    DebuggerFunc("Lobby Escape", LescX, LescY, isLesc, LescC, LescXT, LescYL)
+
+  isLmaxlevel := 0 ; PixelSearchFunc(LmaxlevelC, LmaxlevelX, LmaxlevelY, LmaxlevelXT, LmaxlevelYL, LmaxlevelXB, LmaxlevelYR, LmaxlevelV)
+  If isLmaxlevel && !DebugMode
+    Return { isLmaxlevel: isLmaxlevel }
+
+  ; Debugger
+  If DebugMode
+    DebuggerFunc("Lobby MaxLevel", LmaxlevelX, LmaxlevelY, isLmaxlevel, LmaxlevelC, LmaxlevelXT, LmaxlevelYL)
+
+  isLready := PixelSearchFunc(LreadyC, LreadyX, LreadyY, LreadyXT, LreadyYL, LreadyXB, LreadyYR, LreadyV)
+  isLmode := PixelSearchFunc(LmodeC, LmodeX, LmodeY, LmodeXT, LmodeYL, LmodeXB, LmodeYR, LmodeV)
+  If isLready || isLmode && !DebugMode
     Return { isLesc: isLesc, isLready: isLready, isLmode: isLmode, readyX: LreadyX, readyY: LreadyY }
 
-  isLcontinue := PixelSearchFunc(LcontinueC, LcontinueX, LcontinueY, LcontinueXT, LcontinueYL, LcontinueXB, LcontinueYR, 0)
-  Return { isLesc: isLesc, isLready: isLready, isLmode: isLmode, isLcontinue: isLcontinue }
+  ; Debugger
+  If DebugMode {
+    DebuggerFunc("Lobby Ready Button", LreadyX, LreadyY, isLready, LreadyC, LreadyXT, LreadyYL)
+    DebuggerFunc("Lobby Game Mode", LmodeX, LmodeY, isLmode, LmodeC, LmodeXT, LmodeYL)
+  }
+
+  isLcontinue := PixelSearchFunc(LcontinueC, LcontinueX, LcontinueY, LcontinueXT, LcontinueYL, LcontinueXB, LcontinueYR, LcontinueV)
+
+  If (!DebugMode) {
+    Return { isLesc: isLesc, isLready: isLready, isLmode: isLmode, isLcontinue: isLcontinue }
+  } Else {
+    DebuggerFunc("Lobby Skips", LcontinueX, LcontinueY, isLcontinue, LcontinueC, LcontinueXT, LcontinueYL)
+  }
 }
 
 ; InGame
-InGameFunc() {
-  isIalive := PixelSearchFunc(IaliveC, IaliveX, IaliveY, IaliveXT, IaliveYL, IaliveXB, IaliveYR, 0)
-  If isIalive
+InGameFunc(DebugMode) {
+  isIalive := PixelSearchFunc(IaliveC, IaliveX, IaliveY, IaliveXT, IaliveYL, IaliveXB, IaliveYR, IaliveV)
+  If isIalive && !DebugMode
     Return { isIalive: isIalive }
 
-  isIreque := PixelSearchFunc(IrequeC, IrequeX, IrequeY, IrequeXT, IrequeYL, IrequeXB, IrequeYR, 0)
-  If isIreque
+  ; Debugger 1
+  If DebugMode
+    DebuggerFunc("Playing - Alive", IaliveX, IaliveY, isIalive, IaliveC, IaliveXT, IaliveYL)
+
+  isIreque := PixelSearchFunc(IrequeC, IrequeX, IrequeY, IrequeXT, IrequeYL, IrequeXB, IrequeYR, IrequeV)
+  If isIreque && !DebugMode
     Return { isIalive: isIalive, isIreque: isIreque }
 
-  isIgibi := PixelSearchFunc(IgibiC, IgibiX, IgibiY, IgibiXT, IgibiYL, IgibiXB, IgibiYR, 0)
-  If isIgibi
+  ; Debugger 2
+  If DebugMode
+    DebuggerFunc("Playing - Reque", IrequeX, IrequeY, isIreque, IrequeC, IrequeXT, IrequeYL)
+
+  isIgibi := PixelSearchFunc(IgibiC, IgibiX, IgibiY, IgibiXT, IgibiYL, IgibiXB, IgibiYR, IgibiV)
+  If isIgibi && !DebugMode
     Return { isIgibi: isIgibi, gibiX: IgibiX, gibiY: IgibiY }
 
-  isIpathfinder := PixelSearchFunc(IpathfinderC, IpathfinderX, IpathfinderY, IpathfinderXT, IpathfinderYL, IpathfinderXB, IpathfinderYR, 0)
-  If isIpathfinder
+  ; Debugger 3
+  If DebugMode
+    DebuggerFunc("Playing - Gibi", IgibiX, IgibiY, isIgibi, IgibiC, IgibiXT, IgibiYL)
+
+  isIpathfinder := PixelSearchFunc(IpathfinderC, IpathfinderX, IpathfinderY, IpathfinderXT, IpathfinderYL, IpathfinderXB, IpathfinderYR, IpathfinderV)
+  If isIpathfinder && !DebugMode
     Return { isIpathfinder: isIpathfinder, pathyX: IpathfinderX, pathyY: IpathfinderY }
 
-  isIwraith := PixelSearchFunc(IwraithC, IwraithX, IwraithY, IwraithXT, IwraithYL, IwraithXB, IwraithYR, 0)
-  If isIwraith
+  ; Debugger 4
+  If DebugMode
+    DebuggerFunc("Playing - Pathy", IpathfinderX, IpathfinderY, isIpathfinder, IpathfinderC, IpathfinderXT, IpathfinderYL)
+
+  isIwraith := PixelSearchFunc(IwraithC, IwraithX, IwraithY, IwraithXT, IwraithYL, IwraithXB, IwraithYR, IwraithV)
+  If isIwraith && !DebugMode
     Return { isIwraith: isIwraith, wraithX: IwraithX, wraithY: IwraithY }
+
+  ; Debugger 5
+  If DebugMode
+    DebuggerFunc("Playing - Wraith", IwraithX, IwraithY, isIwraith, IwraithC, IwraithXT, IwraithYL)
+}
+
+; ------------------------ Webhook Functions ------------------------
+DiscordUpdation() {
+  MsgBox, Discord Updation Work Is Pending!
 }
