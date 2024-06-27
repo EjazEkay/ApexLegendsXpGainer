@@ -52,39 +52,40 @@ DPGCFunc(ByRef Color, X, Y) {
 }
 
 ; Debugger Function
-DebuggerFunc(name, DX, DY, isVar, isVarC, isVarXT, isVarYL) {
+DebuggerFunc(name, DX, DY, isVar, isVarC, isVarXT, isVarYL, checkSpeed := 4000) {
   DPGCFunc(DC, DX, DY)
   MsgBox, 0, Debugger - Rfr-bot | %name%, Status: [ %isVar% ] - False : 0 | True : 1`n`nGivenColor: %isVarC%, GotColor: %DC%`n`nCoordX: %DX%, CoordY: %DY%`n`nCoordXT: %isVarXT%, CoordYL: %isVarYL%
+  Sleep, checkSpeed
 }
 
 ; ------------------------ Pixel Search Functions ------------------------
 ; MainMenu
-MainMenuFunc(DebugMode) {
+MainMenuFunc(DebugMode, BotSpeed) {
   isMcontinue := PixelSearchFunc(McontinueC, McontinueX, McontinueY, McontinueXT, McontinueYL, McontinueXB, McontinueYR, McontinueV)
   If (!DebugMode) {
     If isMcontinue
       Return { isMcontinue: isMcontinue }
   } Else {
-    DebuggerFunc("MainMenu Continue", McontinueX, McontinueY, isMcontinue, McontinueC, McontinueXT, McontinueYL)
+    DebuggerFunc("MainMenu Continue", McontinueX, McontinueY, isMcontinue, McontinueC, McontinueXT, McontinueYL, BotSpeed)
   }
 
   isMCinfo := PixelSearchFunc(MCinfoC, MCinfoX, MCinfoY, MCinfoXT, MCinfoYL, MCinfoXB, MCinfoYR, MCinfoV)
   If (!DebugMode) {
     Return { isMcontinue: isMcontinue, isMCinfo: isMCinfo }
   } Else {
-    DebuggerFunc("MainMenu Error/Info", MCinfoX, MCinfoY, isMCinfo, MCinfoC, MCinfoXT, MCinfoYL)
+    DebuggerFunc("MainMenu Error/Info", MCinfoX, MCinfoY, isMCinfo, MCinfoC, MCinfoXT, MCinfoYL, BotSpeed)
   }
 }
 
 ; Lobby
-LobbyFunc(DebugMode) {
+LobbyFunc(DebugMode, BotSpeed) {
   isLesc := PixelSearchFunc(LescC, LescX, LescY, LescXT, LescYL, LescXB, LescYR, LescV)
   If isLesc && !DebugMode
     Return { isLesc: isLesc }
 
   ; Debugger
   If DebugMode
-    DebuggerFunc("Lobby Escape", LescX, LescY, isLesc, LescC, LescXT, LescYL)
+    DebuggerFunc("Lobby Escape", LescX, LescY, isLesc, LescC, LescXT, LescYL, BotSpeed)
 
   isLmaxlevel := 0 ; PixelSearchFunc(LmaxlevelC, LmaxlevelX, LmaxlevelY, LmaxlevelXT, LmaxlevelYL, LmaxlevelXB, LmaxlevelYR, LmaxlevelV)
   If isLmaxlevel && !DebugMode
@@ -92,7 +93,7 @@ LobbyFunc(DebugMode) {
 
   ; Debugger
   If DebugMode
-    DebuggerFunc("Lobby MaxLevel", LmaxlevelX, LmaxlevelY, isLmaxlevel, LmaxlevelC, LmaxlevelXT, LmaxlevelYL)
+    DebuggerFunc("Lobby MaxLevel", LmaxlevelX, LmaxlevelY, isLmaxlevel, LmaxlevelC, LmaxlevelXT, LmaxlevelYL, BotSpeed)
 
   isLready := PixelSearchFunc(LreadyC, LreadyX, LreadyY, LreadyXT, LreadyYL, LreadyXB, LreadyYR, LreadyV)
   isLmode := PixelSearchFunc(LmodeC, LmodeX, LmodeY, LmodeXT, LmodeYL, LmodeXB, LmodeYR, LmodeV)
@@ -101,8 +102,8 @@ LobbyFunc(DebugMode) {
 
   ; Debugger
   If DebugMode {
-    DebuggerFunc("Lobby Ready Button", LreadyX, LreadyY, isLready, LreadyC, LreadyXT, LreadyYL)
-    DebuggerFunc("Lobby Game Mode", LmodeX, LmodeY, isLmode, LmodeC, LmodeXT, LmodeYL)
+    DebuggerFunc("Lobby Ready Button", LreadyX, LreadyY, isLready, LreadyC, LreadyXT, LreadyYL, BotSpeed)
+    DebuggerFunc("Lobby Game Mode", LmodeX, LmodeY, isLmode, LmodeC, LmodeXT, LmodeYL, BotSpeed)
   }
 
   isLcontinue := PixelSearchFunc(LcontinueC, LcontinueX, LcontinueY, LcontinueXT, LcontinueYL, LcontinueXB, LcontinueYR, LcontinueV)
@@ -110,19 +111,19 @@ LobbyFunc(DebugMode) {
   If (!DebugMode) {
     Return { isLesc: isLesc, isLready: isLready, isLmode: isLmode, isLcontinue: isLcontinue }
   } Else {
-    DebuggerFunc("Lobby Skips", LcontinueX, LcontinueY, isLcontinue, LcontinueC, LcontinueXT, LcontinueYL)
+    DebuggerFunc("Lobby Skips", LcontinueX, LcontinueY, isLcontinue, LcontinueC, LcontinueXT, LcontinueYL, BotSpeed)
   }
 }
 
 ; InGame
-InGameFunc(DebugMode) {
+InGameFunc(DebugMode, BotSpeed) {
   isIalive := PixelSearchFunc(IaliveC, IaliveX, IaliveY, IaliveXT, IaliveYL, IaliveXB, IaliveYR, IaliveV)
   If isIalive && !DebugMode
     Return { isIalive: isIalive }
 
   ; Debugger 1
   If DebugMode
-    DebuggerFunc("Playing - Alive", IaliveX, IaliveY, isIalive, IaliveC, IaliveXT, IaliveYL)
+    DebuggerFunc("Playing - Alive", IaliveX, IaliveY, isIalive, IaliveC, IaliveXT, IaliveYL, BotSpeed)
 
   isIreque := PixelSearchFunc(IrequeC, IrequeX, IrequeY, IrequeXT, IrequeYL, IrequeXB, IrequeYR, IrequeV)
   If isIreque && !DebugMode
@@ -130,7 +131,7 @@ InGameFunc(DebugMode) {
 
   ; Debugger 2
   If DebugMode
-    DebuggerFunc("Playing - Reque", IrequeX, IrequeY, isIreque, IrequeC, IrequeXT, IrequeYL)
+    DebuggerFunc("Playing - Reque", IrequeX, IrequeY, isIreque, IrequeC, IrequeXT, IrequeYL, BotSpeed)
 
   isIgibi := PixelSearchFunc(IgibiC, IgibiX, IgibiY, IgibiXT, IgibiYL, IgibiXB, IgibiYR, IgibiV)
   If isIgibi && !DebugMode
@@ -138,7 +139,7 @@ InGameFunc(DebugMode) {
 
   ; Debugger 3
   If DebugMode
-    DebuggerFunc("Playing - Gibi", IgibiX, IgibiY, isIgibi, IgibiC, IgibiXT, IgibiYL)
+    DebuggerFunc("Playing - Gibi", IgibiX, IgibiY, isIgibi, IgibiC, IgibiXT, IgibiYL, BotSpeed)
 
   isIpathfinder := PixelSearchFunc(IpathfinderC, IpathfinderX, IpathfinderY, IpathfinderXT, IpathfinderYL, IpathfinderXB, IpathfinderYR, IpathfinderV)
   If isIpathfinder && !DebugMode
@@ -146,7 +147,7 @@ InGameFunc(DebugMode) {
 
   ; Debugger 4
   If DebugMode
-    DebuggerFunc("Playing - Pathy", IpathfinderX, IpathfinderY, isIpathfinder, IpathfinderC, IpathfinderXT, IpathfinderYL)
+    DebuggerFunc("Playing - Pathy", IpathfinderX, IpathfinderY, isIpathfinder, IpathfinderC, IpathfinderXT, IpathfinderYL, BotSpeed)
 
   isIwraith := PixelSearchFunc(IwraithC, IwraithX, IwraithY, IwraithXT, IwraithYL, IwraithXB, IwraithYR, IwraithV)
   If isIwraith && !DebugMode
@@ -154,7 +155,7 @@ InGameFunc(DebugMode) {
 
   ; Debugger 5
   If DebugMode
-    DebuggerFunc("Playing - Wraith", IwraithX, IwraithY, isIwraith, IwraithC, IwraithXT, IwraithYL)
+    DebuggerFunc("Playing - Wraith", IwraithX, IwraithY, isIwraith, IwraithC, IwraithXT, IwraithYL, BotSpeed)
 }
 
 ; ------------------------ Webhook Functions ------------------------

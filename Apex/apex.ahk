@@ -15,15 +15,23 @@ If !FileExist("settings.ahk") {
 }
 
 Loop, {
+  ; Delay
+  Sleep, BotSpeed
+
   ; Window Swapping
+  If GameMode
+    GameModeText := "Trios"
+  Else
+    GameModeText := "Mixtape"
+
   If DebugMode
     MsgBox, , Debugger - Rfr-bot, GameMode: %GameModeText%, Variation: %Variation%`n`nGivenScreens: %TotalScreens%, NextSwap: %CurrentScreen%`n`nWindowTitle: %Ip%%CurrentScreen%%RemoteName%
   CurrentScreen := WinSwapFunc(CurrentScreen, TotalScreens, Ip, RemoteName)
 
   ; Pixel Search Functions
-  Mainmenu := MainMenuFunc(DebugMode)
-  Lobby := LobbyFunc(DebugMode)
-  InGame := InGameFunc(DebugMode)
+  Mainmenu := MainMenuFunc(DebugMode, BotSpeed)
+  Lobby := LobbyFunc(DebugMode, BotSpeed)
+  InGame := InGameFunc(DebugMode, BotSpeed)
 
   ; Main Menu Block
   If (Mainmenu.isMcontinue) {

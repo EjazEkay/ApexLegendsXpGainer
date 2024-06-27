@@ -1,10 +1,10 @@
 ; Coordinates & Colors
 ; ... MainMenu Coords & Colors - Top : T | Left : L | Buttom : B | Right : R - [ Color : C ] ...
-global McontinueXT := 480
-global McontinueYL := 380
-global McontinueXB := 480
-global McontinueYR := 380
-global McontinueC := 0xFACFB5
+global McontinueXT := 915
+global McontinueYL := 650
+global McontinueXB := 915
+global McontinueYR := 650
+global McontinueC := 0xFFFFFF
 global McontinueV := Variation
 
 global MCinfoXT := 0

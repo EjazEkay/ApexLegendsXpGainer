@@ -54,13 +54,17 @@ SearchColor:
     PixelGetColor, color, %XCoord%, %YCoord%, Fast RGB
     IniWrite, 1, settings.ini, type, RGB
   } Else {
+    IniWrite, 0, settings.ini, type, RGB
     PixelGetColor, color, %XCoord%, %YCoord%
   }
+  Sleep, 3000
   MsgBox, 0, Debugger %version%, The color at (%XCoord%, %YCoord%) is %color%.
 
-  if (AutoClose) {
+  If (AutoClose) {
     IniWrite, 1, settings.ini, type, AutoClose
     ExitApp
+  } Else {
+    IniWrite, 0, settings.ini, type, AutoClose
   }
 Return
 
