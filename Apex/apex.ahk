@@ -33,7 +33,7 @@ Loop, {
   }
 
   ; Lobby Handling
-  If (Lobby.isLesc && !Mainmenu.isMcontinue && !InGame.isIalive) {
+  If (Lobby.isLesc && !InGame.isIalive) {
     KeysFunc("esc")
   } Else If (Lobby.isLmaxlevel && !Mainmenu.isMcontinue && !InGame.isIalive) {
     If (CurrentScreen > 1) {
@@ -46,7 +46,7 @@ Loop, {
     WinClose, %WindowTitle%
 
     Try {
-      DiscordUpdation()
+      DiscordUpdation(webhookURL, message)
     } Catch e {
       MsgBox, 1, Execution Error, An error occurred: %e%, 7
     }
@@ -55,7 +55,7 @@ Loop, {
       ExitApp
 
   } Else If ((Lobby.isLready && Lobby.isLmode && !GameMode) || (Lobby.isLready && !Lobby.isLmode && GameMode)) {
-    ClickFunc(Lobby.readyX, Lobby.readyY, 1, , 1000)
+    ClickFunc(Lobby.readyX, Lobby.readyY, 0, , 1000)
   } Else If ((Lobby.isLready && !Lobby.isLmode && !GameMode) || (Lobby.isLready && !Lobby.isLmode && GameMode)) {
     ClickFunc(200, 800, 0)
     If (!GameMode) {

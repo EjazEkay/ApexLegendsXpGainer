@@ -158,6 +158,21 @@ InGameFunc(DebugMode) {
 }
 
 ; ------------------------ Webhook Functions ------------------------
-DiscordUpdation() {
-  MsgBox, Discord Updation Work Is Pending!
+DiscordUpdation(webhookURL, message) {
+  If (webhookURL = "") {
+    MsgBox, 0, Error Webhook URL, Webhook Url not found!, 5
+    Return
+  }
+
+  jsonPayload := "{""content"": """ message """}"
+
+  http := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+  http.Open("POST", webhookURL, false)
+  http.SetRequestHeader("Content-Type", "application/json")
+
+  http.Send(jsonPayload)
+
+  if (http.Status != 204) {
+    MsgBox, % "Failed to send message. Status code: " . http.Status . "`nResponse: " . http.ResponseText
+  }
 }

@@ -1,6 +1,5 @@
 ; Coordinates & Colors
-
-; MainMenu Coords & Colors - Top : T | Left : L | Buttom : B | Right : R - [ Color : C ]
+; ... MainMenu Coords & Colors - Top : T | Left : L | Buttom : B | Right : R - [ Color : C ] ...
 global McontinueXT := 480
 global McontinueYL := 380
 global McontinueXB := 480
@@ -15,11 +14,11 @@ global MCinfoYR := 540
 global MCinfoC := 0x303132
 global MCinfoV := Variation
 
-; Lobby Coords & Colors
-global LescXT := 30
-global LescYL := 960
-global LescXB := 170
-global LescYR := 1040
+; ... Lobby Coords & Colors ...
+global LescXT := 80
+global LescYL := 998
+global LescXB := 80
+global LescYR := 998
 global LescC := 0xE1E1E1
 global LescV := Variation
 
@@ -51,12 +50,12 @@ global LcontinueV := Variation
 ; global LmaxlevelC := 0x
 ; global LmaxlevelV := Variation
 
-; InGame Coords & Colors
-global IaliveXT := 461
-global IaliveYL := 972
-global IaliveXB := 461
-global IaliveYR := 972
-global IaliveC := 0x959595
+; ... InGame Coords & Colors ...
+global IaliveXT := 180
+global IaliveYL := 1015
+global IaliveXB := 180
+global IaliveYR := 1015
+global IaliveC := 0xFFFFFF
 global IaliveV := Variation
 
 global IrequeXT := 1919
