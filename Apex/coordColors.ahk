@@ -86,3 +86,19 @@ global IpathfinderXB := 900
 global IpathfinderYR := 750
 global IpathfinderC := 0x233445
 global IpathfinderV := Variation
+
+; Others
+
+global IshipXT := 300
+global IshipYL := 150
+global IshipXB := 1600
+global IshipYR := 840
+global IshipC := 0xFFFFFF
+global IshipV := Variation
+
+global IescXT := 70
+global IescYL := 970
+global IescXB := 70
+global IescYR := 970
+global IescC := 0xE1E1E1
+global IescV := Variation

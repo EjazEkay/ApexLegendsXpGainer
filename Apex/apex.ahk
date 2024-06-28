@@ -25,7 +25,7 @@ Loop, {
     GameModeText := "Mixtape"
 
   If DebugMode
-    MsgBox, , Debugger - Rfr-bot, GameMode: %GameModeText%, Variation: %Variation%`n`nGivenScreens: %TotalScreens%, NextSwap: %CurrentScreen%`n`nWindowTitle: %Ip%%CurrentScreen%%RemoteName%
+    MsgBox, ,Debugger - Rfr-bot, GameMode: %GameModeText%, Variation: %Variation%`n`nGivenScreens: %TotalScreens%, NextSwap: %CurrentScreen%`n`nWindowTitle: %Ip%%CurrentScreen%%RemoteName%
   CurrentScreen := WinSwapFunc(CurrentScreen, TotalScreens, Ip, RemoteName)
 
   ; Pixel Search Functions
@@ -85,6 +85,10 @@ Loop, {
     KeysFunc("w up")
   } Else If (InGame.isIreque) {
     KeysFunc("1")
+  } Else If (InGame.isIesc) {
+    KeysFunc("esc")
+  } Else If (InGame.isIship) {
+    ClickFunc(InGame.shipX, InGame.shipY, 0, 20, 7500)
   } Else If (InGame.isIgibi) {
     ClickFunc(InGame.gibiX, InGame.gibiY, 1, 60, 7500)
   } Else If (InGame.isIpathfinder) {

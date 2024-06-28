@@ -133,29 +133,25 @@ InGameFunc(DebugMode, BotSpeed) {
   If DebugMode
     DebuggerFunc("Playing - Reque", IrequeX, IrequeY, isIreque, IrequeC, IrequeXT, IrequeYL, BotSpeed)
 
+  isIesc := PixelSearchFunc(IescC, IescX, IescY, IescXT, IescYL, IescXB, IescYR, IescV)
+  If isIesc
+    Return { isIesc: isIesc }
+
+  isIship := PixelSearchFunc(IshipC, IshipX, IshipY, IshipXT, IshipYL, IshipXB, IshipYR, IshipV)
+  If isIship
+    Return { isIship: isIship, shipX: IshipX, shipY: IshipY }
+
   isIgibi := PixelSearchFunc(IgibiC, IgibiX, IgibiY, IgibiXT, IgibiYL, IgibiXB, IgibiYR, IgibiV)
   If isIgibi && !DebugMode
     Return { isIgibi: isIgibi, gibiX: IgibiX, gibiY: IgibiY }
-
-  ; Debugger 3
-  If DebugMode
-    DebuggerFunc("Playing - Gibi", IgibiX, IgibiY, isIgibi, IgibiC, IgibiXT, IgibiYL, BotSpeed)
 
   isIpathfinder := PixelSearchFunc(IpathfinderC, IpathfinderX, IpathfinderY, IpathfinderXT, IpathfinderYL, IpathfinderXB, IpathfinderYR, IpathfinderV)
   If isIpathfinder && !DebugMode
     Return { isIpathfinder: isIpathfinder, pathyX: IpathfinderX, pathyY: IpathfinderY }
 
-  ; Debugger 4
-  If DebugMode
-    DebuggerFunc("Playing - Pathy", IpathfinderX, IpathfinderY, isIpathfinder, IpathfinderC, IpathfinderXT, IpathfinderYL, BotSpeed)
-
   isIwraith := PixelSearchFunc(IwraithC, IwraithX, IwraithY, IwraithXT, IwraithYL, IwraithXB, IwraithYR, IwraithV)
   If isIwraith && !DebugMode
     Return { isIwraith: isIwraith, wraithX: IwraithX, wraithY: IwraithY }
-
-  ; Debugger 5
-  If DebugMode
-    DebuggerFunc("Playing - Wraith", IwraithX, IwraithY, isIwraith, IwraithC, IwraithXT, IwraithYL, BotSpeed)
 }
 
 ; ------------------------ Webhook Functions ------------------------
