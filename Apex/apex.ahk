@@ -85,9 +85,10 @@ Loop, {
     KeysFunc("w up")
   } Else If (InGame.isIreque) {
     KeysFunc("1")
-  } Else If (InGame.isIesc) {
+  } Else If (InGame.isIesc && !(Mainmenu.isMcontinue || Mainmenu.isMinfo || Lobby.isLready)) {
     KeysFunc("esc")
-  } Else If (InGame.isIship) {
+  } Else If (InGame.isIship && !(Mainmenu.isMcontinue || Mainmenu.isMinfo || Lobby.isLready || Lobby.isLmode)) {
+    Sleep, BotSpeed
     ClickFunc(InGame.shipX, InGame.shipY, 0, 20, 7500)
   } Else If (InGame.isIgibi) {
     ClickFunc(InGame.gibiX, InGame.gibiY, 1, 60, 7500)
