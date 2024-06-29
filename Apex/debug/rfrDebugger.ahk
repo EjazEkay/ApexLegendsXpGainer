@@ -7,7 +7,6 @@ CoordMode, Pixel, Screen
 
 ; Variables
 version := "v1.0.1"
-larry2018 := ""
 
 ; Settings
 If !FileExist("settings.ini") {
