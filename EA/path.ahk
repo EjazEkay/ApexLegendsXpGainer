@@ -1,0 +1,11 @@
+; Images Paths
+global LogoEA := "./images/ea.png"
+global Dark_mailtm := "./images/dark-mailtm.png"
+global Light_mailtm := "./images/light-mailtm.png"
+global Reload_check := "./images/reload-check.png"
+global Ea_1st := "./images/ea-1st.png"
+global Ea_2nd := "./images/ea-2nd.png"
+global Ea_3rd := "./images/ea-3rd.png"
+global Ea_4th := "./images/ea-4th.png"
+global Ea_code := "./images/ea-code.png"
+global Ea_complete := "./images/ea-complete.png"
