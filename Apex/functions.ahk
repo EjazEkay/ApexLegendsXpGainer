@@ -173,3 +173,30 @@ DiscordUpdation(webhookURL, message) {
     MsgBox, % "Failed to send message. Status code: " . http.Status . "`nResponse: " . http.ResponseText
   }
 }
+
+; Extract Values
+ExtractValue(value) {
+  RegExMatch(value, "Point\(x=(\d+), y=(\d+)\)", output) 
+  return { x: output1, y: output2 }
+}
+
+; ------------------------ Webhook Functions ------------------------
+IniReadFunc() {
+  IniRead, ismain, config.ini, Results, main
+  IniRead, iserror, config.ini, Results, error
+  IniRead, isesc, config.ini, Results, esc
+  IniRead, isesc2, config.ini, Results, esc2
+  IniRead, isready, config.ini, Results, ready
+  IniRead, istype, config.ini, Results, type
+  IniRead, isalive, config.ini, Results, alive
+  IniRead, isalive2, config.ini, Results, alive2
+  IniRead, isreque, config.ini, Results, reque
+  IniRead, isship, config.ini, Results, ship
+  IniRead, isship2, config.ini, Results, ship2
+  IniRead, iscontinue, config.ini, Results, continue
+  IniRead, iswraith, config.ini, Results, wraith
+  IniRead, isgibi, config.ini, Results, gibi
+  IniRead, ismaxlevel, config.ini, Results, maxlevel
+
+  Return { ismain: ismain, iserror: iserror, isesc: isesc, isesc2: isesc2, isready: isready, istype: istype, isalive: isalive, isalive2: isalive2, isreque: isreque, isship: isship, isship2: isship2, iscontinue: iscontinue, iswraith: iswraith, isgibi: isgibi, ismaxlevel: ismaxlevel }
+}
