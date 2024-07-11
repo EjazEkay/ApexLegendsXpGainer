@@ -26,6 +26,7 @@ Loop, {
 
   If DebugMode
     MsgBox, ,Debugger - Rfr-bot, GameMode: %GameModeText%, Variation: %Variation%`n`nGivenScreens: %TotalScreens%, NextSwap: %CurrentScreen%`n`nWindowTitle: %Ip%%CurrentScreen%%RemoteName%
+
   CurrentScreen := WinSwapFunc(CurrentScreen, TotalScreens, Ip, RemoteName)
 
   ; Pixel Search Functions

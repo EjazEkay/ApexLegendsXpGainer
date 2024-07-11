@@ -22,9 +22,11 @@ ClickFunc(coordX, coordY, oldposition := 0, speed := 20, delay := 1500) {
 }
 
 ; Keyboard Shortcut Key Function - ^ for Ctrl | ! for Alt | + for Shift | # for Win (Windows key)
-KeysFunc(key, combination := "", delay := 1500) {
-  SendInput, %combination%{%key%}
-  Sleep, delay
+KeysFunc(key, combination := "", delay := 1500, repeat := 1) {
+  Loop, repeat {
+    SendInput, %combination%{%key%}
+    Sleep, delay
+  }
 }
 
 ; Window Swapping Function
@@ -178,6 +180,14 @@ DiscordUpdation(webhookURL, message) {
 ExtractValue(value) {
   RegExMatch(value, "Point\(x=(\d+), y=(\d+)\)", output) 
   return { x: output1, y: output2 }
+}
+
+AppendDiscordText(text, filePath) {
+  if FileExist(filePath) {
+    FileDelete, % filePath
+  }
+
+  FileAppend, % text, % filePath
 }
 
 ; ------------------------ Webhook Functions ------------------------

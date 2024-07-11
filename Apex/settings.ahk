@@ -6,11 +6,15 @@ BotSpeed := 1500 ; 1000 = 1 Second
 MaxLevelStopBot := 0
 
 ; Window Swap Variables
-TotalScreens := 1
+TotalScreens := 2
 CurrentScreen := 1
 Ip := "192.168.0."
 RemoteName := " - Remote Desktop Connection"
 
 ; Discord Updation
-webhookURL := "YOUR_DISCORD_WEBHOOK_URL_HERE"
-message := "Hello, Discord!"
+filePath := "./data/discord.txt"
+disMessage := "Hello, Discord!"
+
+; Apex2.ahk
+maxlevel := []
+flagmaxlevel := 0

