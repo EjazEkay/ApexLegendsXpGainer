@@ -1,23 +1,4 @@
-; ____________________________________________________ Images Paths ____________________________________________________
-
-global Data := "./images/data.png"
-global Login := "./images/login.png"
-global Data_Off := "./images/data_off.png"
-global Search := "./images/search.png"
-global Dob := "./images/dob.png"
-global Cred := "./images/cred.png"
-global Agree := "./images/agree.png"
-global Code := "./images/code.png"
-global Tech := "./images/tech.png"
-
 ; ____________________________________________________ Functions Seperator ____________________________________________________
-
-; Image Search Function
-ImageSearchFunc(image, startX := 0, startY := 0, endX := 1919, endY := 1079, variation := 0) {
-  ImageSearch, x, y, startX, startY, endX, endY, *variation %image%
-  found := !ErrorLevel
-  Return { found: found, x: x, y: y }
-}
 
 ; Click Perform Function
 ClickFunc(coordX, coordY, doubleclick := 0, oldposition := 0, speed := 10, delay := 1000) {
@@ -64,7 +45,9 @@ WindowRun(program, urls*) {
   extension := ".exe"
   runprogram := program . extension
 
-  if (urls.MaxIndex() > 0) {
+  if (urls.MaxIndex() < 0) {
+    Run, %runprogram%
+  } else {
     for index, url in urls {
       Run, %runprogram% %url%
       Sleep, 1500
@@ -89,33 +72,26 @@ TabSwap(next := 0, prev := 0, newTab := 0) {
     KeysFunc("t", "^")
 }
 
+ScrollDown(times) {
+  Loop %times% {
+    Send {WheelDown}
+    Sleep, 100
+  }
+}
+
 ; ____________________________________________________ Functions Seperator ____________________________________________________
 
 ; Random EA Generator
 EAFunc() {
   IniRead, count, settings.ini, Settings, counter
+  count := count + 1
 
-  eaid := "larry2018_A"count
+  eaid := "RfrBeta_A"count
   eapass := "Milkymagic@0123"
 
-  count := count + 1
   IniWrite, %count%, settings.ini, Settings, counter
 
   return { eaid: eaid, eapass: eapass }
-}
-
-SaveData(counter, email, pasword, ea, eapass, ip) {
-  CredentialDetails := % "# Account - [" . counter . "]`n"
-  CredentialDetails .= "Email Address: " . email . "`n"
-  CredentialDetails .= "Email Password: " . pasword . "`n"
-  CredentialDetails .= "EA Identity: " . ea . "`n"
-  CredentialDetails .= "EA Password: " . eapass . "`n"
-  CredentialDetails .= "Created Ip: " . ip . "`n`n"
-
-  OutputFile := "./data/details.txt"
-  FileAppend, % CredentialDetails, % OutputFile
-
-  Return CredentialDetails
 }
 
 AppendDiscordText(text, filePath) {
@@ -126,18 +102,83 @@ AppendDiscordText(text, filePath) {
   FileAppend, % text, % filePath
 }
 
+SaveDetailsToCSV(EmailAddress, EmailPassword, EaId, EaPass, SecondaryGmail, IpAddress, CreatedAt) {
+  csvFile := "./data/details.csv"
+
+  if (!FileExist(csvFile)) {
+    header := "Email,Email Password,Ea,Ea Password,Secondary Email,Ip,Created At`n"
+    FileAppend, % header, % csvFile
+  }
+
+  dataRow := EmailAddress . "," . EmailPassword . "," . EaId . "," . EaPass . "," . SecondaryGmail . "," . IpAddress . "," . CreatedAt . "`n"
+
+  FileAppend, % dataRow, % csvFile
+}
+
+; Extract EA Code
+ExtractValue(value) {
+  RegExMatch(value, "Point\(x=(\d+), y=(\d+)\)", output) 
+  return { x: output1, y: output2 }
+}
+
 ; ____________________________________________________ Functions Seperator ____________________________________________________
 
-SearchFunc() {
-  isData := ImageSearchFunc(Data)
-  isLogin := ImageSearchFunc(Login)
-  isData_Off := ImageSearchFunc(Data_Off)
-  isSearch := ImageSearchFunc(Search)
-  isDob := ImageSearchFunc(Dob)
-  isCred := ImageSearchFunc(Cred)
-  isAgree := ImageSearchFunc(Agree)
-  isCode := ImageSearchFunc(Code)
-  isTech := ImageSearchFunc(Tech)
+IniReadFunc(WorkingDir) {
+  RunWait, py "%WorkingDir%ea.py", %WorkingDir%, hide
 
-  Return { isData: isData, isLogin: isLogin, isData_Off: isData_Off, isSearch: isSearch, isDob: isDob, isCred: isCred, isAgree: isAgree, isCode: isCode, isTech: isTech }
+  Sleep, 1000
+  filename := "config.ini"
+
+  IniRead, isData, config.ini, Results, data
+  IniRead, isLogin, config.ini, Results, login
+  IniRead, isDataoff, config.ini, Results, dataoff
+  IniRead, isSearch, config.ini, Results, search
+  IniRead, isDob, config.ini, Results, dob
+  IniRead, isCred, config.ini, Results, cred
+  IniRead, isAgree, config.ini, Results, agree
+  IniRead, isCode, config.ini, Results, code
+  IniRead, isTech, config.ini, Results, tech
+  IniRead, isFinish, config.ini, Results, finish
+  IniRead, isAddemail, config.ini, Results, addemail
+  IniRead, isVerify, config.ini, Results, verify
+  IniRead, isVerifybtn, config.ini, Results, verifybtn
+  IniRead, isContinue, config.ini, Results, continue
+  IniRead, isSubmit, config.ini, Results, submit
+
+  Return { isData: isData, isLogin: isLogin, isDataoff: isDataoff, isSearch: isSearch, isDob: isDob, isCred: isCred, isAgree: isAgree, isCode: isCode, isTech: isTech, isFinish: isFinish, isAddemail: isAddemail, isVerify: isVerify, isVerifybtn: isVerifybtn, isContinue: isContinue, isSubmit: isSubmit }
+}
+
+; Gmail Variations Function
+ReadAndRemoveFirstLine(filePath) {
+  if !FileExist(filePath)
+    return ""
+
+  FileRead, fileContents, % filePath
+  lines := StrSplit(fileContents, "`n", "`r")
+
+  if lines.MaxIndex() = 0
+    return ""
+
+  firstLine := lines[1]
+  lines.RemoveAt(1)
+
+  file := FileOpen(filePath, "w")
+  Loop, % lines.MaxIndex()
+    file.WriteLine(lines[A_Index])
+  file.Close()
+
+  return firstLine
+}
+
+; Current Time / Date
+GetCurrentDateTime() {
+  FormatTime, currentTime,, HH:mm:ss dd/MM/yyyy
+  return currentTime
+}
+
+; Clean Data
+CleanData(data) {
+  StringReplace, data, data, `n, , All
+  StringReplace, data, data, `r, , All
+  return data
 }

@@ -22,33 +22,49 @@ filePath := "./data/discord.txt"
 IniRead, huawei_URL, settings.ini, Settings, huawei
 IniRead, ea_URL, settings.ini, Settings, ea
 IniRead, eaSettings_URL, settings.ini, Settings, easettings
-IniRead, count, settings.ini, Settings, counter
+IniRead, gmailFilePath, settings.ini, Settings, gmailFile
+IniRead, disPath, settings.ini, Settings, discordFile
 IniRead, sandboxTitle, settings.ini, Settings, sandboxtitle
-IniRead, firefoxTitle, settings.ini, Settings, firefoxtitle
+IniRead, usedFlag, settings.ini, Settings, useflag
 
 ; Flags / Variables
 Clipboard := ""
 regtext := ""
 resetIp := 1 ; Default 1
 credFlag := 0 ; Default 0
-searchFlag := 1 ; Default 1
+searchFlag := 0 ; Default 0
+maxUsedFlag := 4
+maxLimit := 10
+enableData := 0
+finishFlag := 0
+dobFlag := 0
+credentialFlag := 0
+agreeFlag := 0
+codeFlag := 0
 
 ; ____________________________________________________ [ Main ] ____________________________________________________
 
 WindowRun("firefox", huawei_URL)
 
 Loop {
-  avl := SearchFunc()
+  ini := IniReadFunc(WorkingDir)
 
-  If (avl.isData.found && resetIp) {
-    ClickFunc(avl.isData.x, avl.isData.y, , 1)
-  } Else If (avl.isLogin.found) {
-    ClickFunc(avl.isLogin.x + 5, avl.isLogin.y + 5, , 1)
-  } Else If (avl.isData_Off.found) {
-    ClickFunc(avl.isData_Off.x, avl.isData_Off.y)
+  If (ini.isData && resetIp) {
+    valueData := ExtractValue(ini.isData)
+    ClickFunc(valueData.x, valueData.y, , 1)
+    enableData := 1
     resetIp := 0
+  } Else If (ini.isLogin) {
+    valueLogin := ExtractValue(ini.isLogin)
+    ClickFunc(valueLogin.x, valueLogin.y, , 1)
+  } Else If (ini.isDataoff && enableData) {
+    valueDataoff := ExtractValue(ini.isDataoff)
+    ClickFunc(valueDataoff.x, valueDataoff.y)
+    enableData := 0
     credFlag := 1
+    searchFlag := 1
     WindowRun("WindowsSandbox")
+    Sleep, 7500
   }
 
   If (credFlag) {
@@ -67,19 +83,23 @@ Loop {
       EmailPassword := PASSWORD
       credFlag := 0
     } Else {
-      MsgBox, 0, , Error Occured!, 5
+      MsgBox, 0, , Error Occured!
     }
   }
 
-  If (avl.isSearch.found && searchFlag) {
-    ClickFunc(avl.isSearch.x, avl.isSearch.y, , 1)
-    KeysFunc(ea_URL, , , 2000)
-    KeysFunc("enter")
+  If (ini.isSearch && searchFlag) {
     searchFlag := 0
+    valueSearch := ExtractValue(ini.isSearch)
+    ClickFunc(valueSearch.x, valueSearch.y, , 1)
+    Send, %ea_URL%
+    Sleep, 2000
+    KeysFunc("enter")
+    dobFlag := 1
   }
 
-  If (avl.isDob.found) {
+  If (ini.isDob && dobFlag) {
     KeysFunc("tab", , 8, 250)
+    Sleep, 500
     KeysFunc("down")
     KeysFunc("tab")
     KeysFunc("down")
@@ -87,29 +107,37 @@ Loop {
     KeysFunc("down", , 25, 100)
     KeysFunc("tab")
     KeysFunc("enter", , , 2000)
+    dobFlag := 0
+    credentialFlag := 1
   }
 
-  If (avl.isCred.found) {
+  If (ini.isCred && credentialFlag) {
     KeysFunc("tab", , 2, 300)
     Send, %EmailAddress%
     KeysFunc("tab")
     EA := EAFunc()
-    eaid := EA.eaid
-    eapass := EA.eapass
-    Send, %eaid%
+    EaId := EA.eaid
+    EaPass := EA.eapass
+    Send, %EaId%
     KeysFunc("tab")
-    Send, %eapass%
+    Send, %EaPass%
     KeysFunc("tab", , 2, 300)
+    Sleep, 3000
     KeysFunc("enter", , , 2000)
+    credentialFlag := 0
+    agreeFlag := 1
   }
 
-  If (avl.isAgree.found) {
-    ClickFunc(avl.isAgree.x, avl.isAgree.y)
+  If (ini.isAgree && agreeFlag) {
+    valueAgree := ExtractValue(ini.isAgree)
+    ClickFunc(valueAgree.x, valueAgree.y)
     KeysFunc("tab", , 3, 300)
     KeysFunc("enter", , , 2000)
+    agreeFlag := 0
+    codeFlag := 1
   }
 
-  If (avl.isCode.found) {
+  If (ini.isCode && codeFlag) {
     RunWait, py "%WorkingDir%code.py", %WorkingDir%
     Sleep, 500
 
@@ -118,20 +146,96 @@ Loop {
     If (CODE) {
       Send, %CODE%
       KeysFunc("enter")
+      finishFlag := 1
     } Else {
       MsgBox, Error Code Not Found
     }
+    codeFlag := 0
   }
 
-  ; If (avl.isFinish.found) {
-  ;   KeysFunc()
-  ;   KeysFunc("enter")
-  ; }
+  If (ini.isFinish && finishFlag) {
+    KeysFunc("tab")
+    KeysFunc("enter")
+    TabSwap(, , 1)
+    Send, %eaSettings_URL%
+    Sleep, 500
+    KeysFunc("enter")
+    Sleep, 10000
+    MouseMove, 960, 540, 10
+    ScrollDown(10)
 
-  MsgBox, Ip: %IpAddress%, Email: %Email%, Password: %Password%
-  MsgBox, 0, , Loop End Rerunning, 3
+    CreatedAt := GetCurrentDateTime()
 
-  Sleep, 400
+    usedFlagTemp := usedFlag
+    usedFlagTemp := usedFlagTemp + 1
+    IniWrite, %usedFlagTemp%, settings.ini, Settings, useflag
+
+    If (usedFlagTemp > maxUsedFlag) {
+      IniWrite, 0, settings.ini, Settings, useflag
+      SecondaryGmail := CleanData(ReadAndRemoveFirstLine(gmailFilePath))
+    } Else {
+      file := FileOpen(gmailFilePath, "r")
+      SecondaryGmail := CleanData(file.ReadLine())
+      file.Close()
+    }
+
+    SaveDetailsToCSV(EmailAddress, EmailPassword, EaId, EaPass, SecondaryGmail, IpAddress, CreatedAt)
+
+    IniRead, count, settings.ini, Settings, counter
+    DiscordMessage := "# > Account [ " count " ]\n``````ahk\nEmail:" EmailAddress "`nPasword: " EmailPassword "\nEA: " EaId "\nEA-Password: " EaPass "\nSecondary: " SecondaryGmail "\nCreatedAt: " CreatedAt "\n``````\n**IpAddress:** || " ipaddress " ||"
+    AppendDiscordText(DiscordMessage, disPath)
+    Sleep, 500
+    RunWait, py "%WorkingDir%discord.py", %WorkingDir%
+    finishFlag := 0
+  }
+
+  If (ini.isTech) {
+    searchFlag := 1
+  }
+
+  If (ini.isAddemail) {
+    valueAddmail := ExtractValue(ini.isAddemail)
+    ClickFunc(valueAddmail.x, valueAddmail.y)
+  } Else If (ini.isVerify) {
+    valueVerify := ExtractValue(ini.isVerify)
+    ClickFunc(valueVerify.x, valueVerify.y)
+  } Else If (ini.isSubmit) {
+    valueSubmit := ExtractValue(ini.isSubmit)
+    RunWait, py "%WorkingDir%code.py", %WorkingDir%
+    Sleep, 1500
+    IniRead, CODE, settings.ini, Settings, code
+    Sleep, 250
+    Send, %CODE%
+    Sleep, 250
+    ClickFunc(valueSubmit.x, valueSubmit.y)
+  } Else If (ini.isContinue) {
+    valueContinue := ExtractValue(ini.isContinue)
+    Send, %SecondaryGmail%
+    Sleep, 250
+    ClickFunc(valueContinue.x, valueContinue.y)
+  } Else If (ini.isVerifybtn) {
+    valueVerifyBtn := ExtractValue(ini.isVerifybtn)
+    RunWait, py "%WorkingDir%googleCode.py", %WorkingDir%
+    Sleep, 1500
+    IniRead, GMAILCODE, settings.ini, Settings, gmailcode
+    Sleep, 250
+    Send, %GMAILCODE%
+    Sleep, 250
+    ClickFunc(valueVerifyBtn.x, valueVerifyBtn.y, , , , 2500)
+    WindowClose(sandboxTitle)
+    ClickFunc(960, 540)
+    KeysFunc("enter")
+    resetIp := 1
+    If (CreationLimit >= MaxLimit) {
+      MsgBox, 0, Info, Account Creation Limit Has Been Reached!
+      ExitApp
+    } Else {
+      ; WindowSwap()
+      MsgBox, 0, Info, An Account has been Created, 3
+    }
+  }
+
+  Sleep, 1000
 }
 
 ; ____________________________________________________ [ Bottom ] ____________________________________________________
