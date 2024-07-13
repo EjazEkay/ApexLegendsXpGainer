@@ -33,7 +33,7 @@ regtext := ""
 resetIp := 1 ; Default 1
 credFlag := 0 ; Default 0
 searchFlag := 0 ; Default 0
-maxUsedFlag := 4
+maxUsedFlag := 2
 maxLimit := 10
 enableData := 0
 finishFlag := 0
@@ -63,8 +63,9 @@ Loop {
     enableData := 0
     credFlag := 1
     searchFlag := 1
+    Sleep, 6000
     WindowRun("WindowsSandbox")
-    Sleep, 7500
+    Sleep, 6000
   }
 
   If (credFlag) {
