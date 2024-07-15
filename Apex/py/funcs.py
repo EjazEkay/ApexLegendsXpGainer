@@ -40,7 +40,7 @@ def imagefunc(img, name="", variation=0.99):
 def getfunc():
   # Images Variables
   isMain = imagefunc(Main, 'MainMenu')
-  isError = imagefunc(Error, 'Error/Info')
+  isError = imagefunc(Error, 'Error/Info', .995)
   isEsc = imagefunc(Esc, 'Esc Key')
   isEsc2 = imagefunc(Esc2, 'Esc2 Key')
   isReady = imagefunc(Ready, 'Ready Button')

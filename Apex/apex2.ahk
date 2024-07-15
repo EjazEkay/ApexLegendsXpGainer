@@ -36,7 +36,7 @@ Loop {
   }
 
   ; Delay
-  Sleep, 1500
+  Sleep, 500
 
   ; Image Serach
   RunWait, py "%WorkingDir%apex.py", %WorkingDir%, hide
@@ -60,11 +60,11 @@ Loop {
 
   If (ini.ismain) {
     KeysFunc("space")
-  } Else If (ini.iserror) {
+  } Else If (ini.iserror && !ini.isready && !(ini.isalive && ini.isalive2) && !(ini.isesc && ini.isesc2)) {
     KeysFunc("esc")
   }
 
-  If (ini.isesc || ini.isesc2) {
+  If ((ini.isesc || ini.isesc2) && !ini.ismain) {
     KeysFunc("esc")
   }
 
@@ -72,11 +72,12 @@ Loop {
     Vready := ExtractValue(ini.isready)
     ClickFunc(Vready.x, Vready.y, 1)
   } Else If ((ini.isready && !ini.istype && !GameMode) || (ini.isready && ini.istype && GameMode)) {
-    ClickFunc(Vready.x, Vready.y - 100, 1)
+    Vready := ExtractValue(ini.isready)
+    ClickFunc(Vready.x, Vready.y - 150, 1)
     If (!GameMode) {
-      ClickFunc(Vready.x + 500, Vready.y - 300, 1)
+      ClickFunc(Vready.x + 800, Vready.y - 300, 1)
     } Else If (GameMode) {
-      ClickFunc(Vready.x, Vready.y - 400, 1)
+      ClickFunc(Vready.x, Vready.y - 300, 1)
     }
     ClickFunc(Vready.x, Vready.y, 1)
   }

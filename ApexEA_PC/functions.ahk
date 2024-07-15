@@ -55,6 +55,10 @@ WindowRun(program, urls*) {
   }
 }
 
+WindowAppRun() {
+  RunWait, "C:\Program Files\Electronic Arts\EA Desktop\EA Desktop\EALauncher.exe"
+}
+
 WindowClose(title) {
   If WinExist(title) {
     WinClose, %title%
@@ -86,12 +90,53 @@ EAFunc() {
   IniRead, count, settings.ini, Settings, counter
   count := count + 1
 
-  eaid := "RfrBeta_A"count
-  eapass := "Milkymagic@0123"
+  eaid := "RfrBeta_B"count
+  eapass := EAPassFunc()
 
   IniWrite, %count%, settings.ini, Settings, counter
 
   return { eaid: eaid, eapass: eapass }
+}
+
+; Firefox Incagnito
+firefoxIncog() {
+  Run, firefox.exe -private-window https://ea.com/register
+}
+
+PingInternet() {
+  RunWait, %ComSpec% /c ping -n 1 google.com, , Hide
+  if (ErrorLevel = 0) {
+    return 1
+  } else {
+    return 0
+  }
+}
+
+DeleteTempFiles() {
+  FileDelete, %A_Temp%\*.*
+  MsgBox, 0, , Temporary files deleted., 2
+}
+
+; Random EA Password Generator
+EAPassFunc() {
+  ; Define the character sets
+  smallLetters := "abcdefghijklmnopqrstuvwxyz"
+  capitalLetters := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  numbers := "0123456789"
+
+  Random, capIndex, 1, 26
+  capitalLetter := SubStr(capitalLetters, capIndex, 1)
+
+  Random, numIndex, 1, 10
+  number := SubStr(numbers, numIndex, 1)
+
+  smallPassword := ""
+  Loop, 6 {
+    Random, letterIndex, 1, 26
+    smallPassword .= SubStr(smallLetters, letterIndex, 1)
+  }
+
+  Return capitalLetter . smallPassword . number
 }
 
 AppendDiscordText(text, filePath) {
@@ -103,7 +148,7 @@ AppendDiscordText(text, filePath) {
 }
 
 SaveDetailsToCSV(EmailAddress, EmailPassword, EaId, EaPass, SecondaryGmail, IpAddress, CreatedAt) {
-  csvFile := "./data/details.csv"
+  csvFile := "./data/temp.csv"
 
   if (!FileExist(csvFile)) {
     header := "Email,Email Password,Ea,Ea Password,Secondary Email,Ip,Created At`n"
@@ -144,8 +189,10 @@ IniReadFunc(WorkingDir) {
   IniRead, isVerifybtn, config.ini, Results, verifybtn
   IniRead, isContinue, config.ini, Results, continue
   IniRead, isSubmit, config.ini, Results, submit
+  IniRead, isCaptcha, config.ini, Results, captcha
+  IniRead, isCreate, config.ini, Results, create
 
-  Return { isData: isData, isLogin: isLogin, isDataoff: isDataoff, isSearch: isSearch, isDob: isDob, isCred: isCred, isAgree: isAgree, isCode: isCode, isTech: isTech, isFinish: isFinish, isAddemail: isAddemail, isVerify: isVerify, isVerifybtn: isVerifybtn, isContinue: isContinue, isSubmit: isSubmit }
+  Return { isData: isData, isLogin: isLogin, isDataoff: isDataoff, isSearch: isSearch, isDob: isDob, isCred: isCred, isAgree: isAgree, isCode: isCode, isTech: isTech, isFinish: isFinish, isAddemail: isAddemail, isVerify: isVerify, isVerifybtn: isVerifybtn, isContinue: isContinue, isSubmit: isSubmit, isCaptcha: isCaptcha, isCreate: isCreate }
 }
 
 ; Gmail Variations Function

@@ -6,9 +6,9 @@ BotSpeed := 1500 ; 1000 = 1 Second
 MaxLevelStopBot := 0
 
 ; Window Swap Variables
-TotalScreens := 2
+TotalScreens := 1
 CurrentScreen := 1
-Ip := "192.168.0."
+Ip := "pc0"
 RemoteName := " - Remote Desktop Connection"
 
 ; Discord Updation

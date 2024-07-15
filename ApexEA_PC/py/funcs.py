@@ -18,6 +18,9 @@ Verifybtn = "./images/verifybtn.png"
 Continue = "./images/continue.png"
 Submit = "./images/submit.png"
 
+Captcha = "./images/captcha.png"
+Create = "./images/create.png"
+
 
 # ____________________________________________________ Functions Seperator ____________________________________________________
 
@@ -56,6 +59,9 @@ def getfunc():
   isContinue = imagefunc(Continue, "Continue This Gmail Address")
   isSubmit = imagefunc(Submit, "Submit Code")
 
+  isCaptcha = imagefunc(Captcha, "Captcha Found")
+  isCreate = imagefunc(Create, "Create Img Found")
+
   return (
     isData,
     isLogin,
@@ -71,7 +77,9 @@ def getfunc():
     isVerify,
     isVerifybtn,
     isContinue,
-    isSubmit
+    isSubmit,
+    isCaptcha,
+    isCreate
   )
 
 # ____________________________________________________ Functions Seperator ____________________________________________________

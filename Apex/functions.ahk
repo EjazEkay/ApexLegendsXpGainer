@@ -23,7 +23,7 @@ ClickFunc(coordX, coordY, oldposition := 0, speed := 20, delay := 1500) {
 
 ; Keyboard Shortcut Key Function - ^ for Ctrl | ! for Alt | + for Shift | # for Win (Windows key)
 KeysFunc(key, combination := "", delay := 1500, repeat := 1) {
-  Loop, repeat {
+  Loop, %repeat% {
     SendInput, %combination%{%key%}
     Sleep, delay
   }

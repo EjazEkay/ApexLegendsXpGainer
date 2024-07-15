@@ -22,7 +22,9 @@ result = funcs.getfunc()
   isVerify,
   isVerifybtn,
   isContinue,
-  isSubmit
+  isSubmit,
+  isCaptcha,
+  isCreate
 ) = result
 
 config = configparser.ConfigParser()
@@ -42,7 +44,9 @@ config['Results'] = {
   'verify': isVerify,
   'verifybtn': isVerifybtn,
   'continue': isContinue,
-  'submit': isSubmit
+  'submit': isSubmit,
+  'captcha': isCaptcha,
+  'create': isCreate
 }
 
 file_path = os.path.join('..', 'config.ini')
