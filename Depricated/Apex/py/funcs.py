@@ -22,7 +22,7 @@ Maxlevel = "./images/maxlevel.png"
 # ____________________________________________________ Functions Seperator ____________________________________________________
 
 
-def imagefunc(img, name="", variation=0.99):
+def imagefunc(img, name="", variation=0.9):
   try:
     image = pyautogui.locateCenterOnScreen(img, confidence=variation)
 

@@ -26,37 +26,37 @@ If !FileExist("settings.ahk") {
 ; ____________________________________________________ [ Main ] ____________________________________________________
 
 Loop {
-  For index, value in maxlevel {
-    If (value = CurrentScreen) {
-      flagmaxlevel := 1
-      Break
-    } Else {
-      flagmaxlevel := 0
-    }
-  }
+  ; For index, value in maxlevel {
+  ;   If (value = CurrentScreen) {
+  ;     flagmaxlevel := 1
+  ;     Break
+  ;   } Else {
+  ;     flagmaxlevel := 0
+  ;   }
+  ; }
 
   ; Delay
-  Sleep, 500
+  Sleep, 1000
 
   ; Image Serach
   RunWait, py "%WorkingDir%apex.py", %WorkingDir%, hide
 
   ini := IniReadFunc()
 
-  If (ini.ismaxlevel && flagmaxlevel) {
-    CurrentScreen := CurrentScreen + 1
-    CurrentScreen := WinSwapFunc(CurrentScreen, TotalScreens, Ip, RemoteName)
-  } Else If (ini.ismaxlevel && !flagmaxlevel) {
-    MsgBox, 0, Update, MaxLevel Has been reached. PC%CurrentScreen%, 3
+  ; If (ini.ismaxlevel && flagmaxlevel) {
+  ;   CurrentScreen := CurrentScreen + 1
+  ;   CurrentScreen := WinSwapFunc(CurrentScreen, TotalScreens, Ip, RemoteName)
+  ; } Else If (ini.ismaxlevel && !flagmaxlevel) {
+  ;   MsgBox, 0, Update, MaxLevel Has been reached. PC%CurrentScreen%, 3
 
-    AppendDiscordText(disMessage, filePath)
-    RunWait, py "%WorkingDir%discord.py", %WorkingDir%
+  ;   AppendDiscordText(disMessage, filePath)
+  ;   RunWait, py "%WorkingDir%discord.py", %WorkingDir%
 
-    maxlevel.Push(CurrentScreen)
-  } Else If (!ini.ismaxlevel && flagmaxlevel) {
-    maxlevel.RemoveAt(CurrentScreen)
-    flagmaxlevel := 0
-  }
+  ;   maxlevel.Push(CurrentScreen)
+  ; } Else If (!ini.ismaxlevel && flagmaxlevel) {
+  ;   maxlevel.RemoveAt(CurrentScreen)
+  ;   flagmaxlevel := 0
+  ; }
 
   If (ini.ismain) {
     KeysFunc("space")
@@ -110,11 +110,9 @@ Loop {
     Sleep, 5000
   }
 
-  If !(ini.ismaxlevel || flagmaxlevel) {
-    CurrentScreen := WinSwapFunc(CurrentScreen, TotalScreens, Ip, RemoteName)
-  }
+  CurrentScreen := WinSwapFunc(CurrentScreen, TotalScreens, Ip, RemoteName)
 
-  Sleep, 400
+  Sleep, 1000
 }
 
 ; ____________________________________________________ [ Bottom ] ____________________________________________________
