@@ -1,7 +1,8 @@
 import pyautogui
-import configparser
 import time
-import subprocess
+import win32gui
+import win32con
+import pymsgbox
 
 # Images Path Address
 Main = "./images/main.png"
@@ -37,22 +38,17 @@ def imagefunc(img, name="", variation=0.9):
   except pyautogui.ImageNotFoundException:
     return 0
 
+def window_to_foreground(title):
+  hwnd = win32gui.FindWindow(None, title)
+  if hwnd:
+    win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+    win32gui.SetForegroundWindow(hwnd)
+  else:
+    pymsgbox.alert(f'The window "{title}" was not found.', "Error: Screen not found", button='Okay', timeout=4000)
+
 def activate_window(screen_number, max_screens):
-  config = configparser.ConfigParser()
-  config_file = './ahk/config.ini'
-  config.read(config_file)
-
-  if 'Results' not in config:
-    config['Results'] = {}
-
-  config['Results']['current_screen'] = str(screen_number)
-  with open(config_file, 'w') as configfile:
-    config.write(configfile)
-
-  time.sleep(0.5)
-
-  winActivate = './ahk/winActivate.exe'
-  subprocess.run([winActivate], check=True)
+  window_title = f"PC{screen_number} - Remote Desktop Connection"
+  window_to_foreground(window_title)
 
   time.sleep(1)
 
