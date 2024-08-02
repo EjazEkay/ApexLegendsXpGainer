@@ -21,22 +21,31 @@ keyboard = Controller()
 
 while True:
   result = my.getfunc()
-  ( isMain, isError, isEsc, isEsc2, isReady, isAlive, isAlive2, isReque, isShip, isShip2, isContinue, isWraith, isGibi, isMaxlevel, isCheckMainMenu, isCheckMixTape ) = result
+  ( isMain, isError, isEsc, isEsc2, isEsc3, isReady, isAlive, isAlive2, isReque, isShip, isContinue, isContinue2, isWraith, isGibi, isPathy, isMaxlevel, isCheckMainMenu, isCheckMixTape ) = result
 
   if isCheckMainMenu:
     if isMain:
       keyboard.press(Key.space)
       keyboard.release(Key.space)
+      time.sleep(0.5)
 
     if isError:
       keyboard.press(Key.esc)
       keyboard.release(Key.esc)
+      time.sleep(0.5)
 
   if isReady and not isMaxlevel:
     if isCheckMixTape:
+      keyboard.press(Key.esc)
+      keyboard.release(Key.esc)
+      time.sleep(0.5)
+      keyboard.press(Key.esc)
+      keyboard.release(Key.esc)
+      time.sleep(0.5)
       pyautogui.moveTo(isReady)
       time.sleep(.25)
       pyautogui.click()
+      time.sleep(1)
 
     if not isCheckMixTape:
       pyautogui.moveTo(200, 800)
@@ -48,32 +57,46 @@ while True:
       pyautogui.click()
       time.sleep(.1)
 
-  if (isEsc or isEsc2) and not (isCheckMainMenu or isAlive or isAlive2 or isReque):
+  if (isEsc or isEsc2 or isEsc3) and not (isCheckMainMenu or isAlive or isAlive2 or isReque):
     keyboard.press(Key.esc)
     keyboard.release(Key.esc)
+    time.sleep(0.5)
 
   if isReque:
     keyboard.press('1')
     keyboard.release('1')
+    time.sleep(0.5)
 
   if isAlive or isAlive2:
     keyboard.press('w')
     time.sleep(2.5)
     keyboard.release('w')
+    time.sleep(0.5)
 
-  if isShip or isShip2:
-    pyautogui.click(isShip)
-    pyautogui.click(isShip2)
+  if isShip:
+    pyautogui.moveTo(isShip)
+    keyboard.press(Key.space)
+    keyboard.release(Key.space)
+    time.sleep(1)
 
-  if isContinue:
-    for _ in range(4):
+  if isContinue or isContinue2:
+    pyautogui.moveTo(250, 950)
+    for _ in range(3):
       keyboard.press(Key.space)
       keyboard.release(Key.space)
       time.sleep(0.5)
 
-  if (isWraith or isGibi) and not ((isAlive or isAlive2) and (isShip or isShip2)):
-    pyautogui.click(isWraith)
-    pyautogui.click(isGibi)
+  if (isWraith or isGibi or isPathy) and not (isAlive or isAlive2 or isShip or isReady or isContinue or isEsc or isEsc3 or isCheckMainMenu or isCheckMixTape):
+    pyautogui.moveTo(isPathy)
+    keyboard.press(Key.space)
+    keyboard.release(Key.space)
+    pyautogui.moveTo(isWraith)
+    keyboard.press(Key.space)
+    keyboard.release(Key.space)
+    pyautogui.moveTo(isGibi)
+    keyboard.press(Key.space)
+    keyboard.release(Key.space)
+    time.sleep(0.5)
   
   CurrentScreen = my.activate_window(CurrentScreen, MaxScreens)
 
