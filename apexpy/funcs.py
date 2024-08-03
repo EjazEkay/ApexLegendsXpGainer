@@ -1,7 +1,6 @@
 import pyautogui
+import subprocess
 import time
-import win32gui
-import win32con
 import pymsgbox
 
 # Images Path Address
@@ -38,32 +37,10 @@ def imagefunc(img, name="", variation=0.9):
   except pyautogui.ImageNotFoundException:
     return 0
 
-def window_to_foreground(title):
-  hwnd = win32gui.FindWindow(None, title)
-  if hwnd:
-    win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
-    win32gui.SetForegroundWindow(hwnd)
-  else:
-    pymsgbox.alert(f'The window "{title}" was not found.', "Error: Screen not found", button='Okay', timeout=4000)
-
-def activate_window(screen_number, max_screens):
-  window_title = f"PC{screen_number} - Remote Desktop Connection"
-  window_to_foreground(window_title)
-
-  time.sleep(1)
-
-  return (screen_number % max_screens) + 1
-
-def get_max_screens():
-  while True:
-    try:
-      MaxScreens = int(input("Enter the maximum number of screens: "))
-      if 1 <= MaxScreens <= 25:
-        return MaxScreens
-      else:
-        print("Error")
-    except ValueError:
-      print("Error: Invalid input")
+def activate_window():
+  winSwap = r'./ahk/winSwap.exe'
+  subprocess.run([winSwap], check=True)
+  time.sleep(.5)
 
 # ____________________________________________________ Functions Seperator ____________________________________________________
 

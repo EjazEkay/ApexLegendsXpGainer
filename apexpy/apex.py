@@ -5,7 +5,7 @@
 #  /_/   \_\_|   |_____/_/\_\ |_____|_____\____|_____|_| \_|____/|____/ 
 
 # ____________________________________________________ [ Imports Section ] ____________________________________________________
-# import os
+
 import time
 
 import pyautogui
@@ -14,11 +14,7 @@ from pynput.keyboard import Key, Controller
 import funcs as my
 
 # ____________________________________________________ [ Main Section ] ____________________________________________________
-# script_dir = os.path.dirname(__file__)
-# os.chdir(script_dir)
 
-MaxScreens = my.get_max_screens()
-CurrentScreen = 1
 keyboard = Controller()
 
 while True:
@@ -100,6 +96,7 @@ while True:
     keyboard.release(Key.space)
     time.sleep(0.5)
   
-  CurrentScreen = my.activate_window(CurrentScreen, MaxScreens)
+  time.sleep(1)
+  my.activate_window()
 
   time.sleep(2)
