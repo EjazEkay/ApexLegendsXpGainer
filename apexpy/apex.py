@@ -114,8 +114,10 @@ while True:
     activate_window()
     time.sleep(default_delay)
     continue
-
-  if imagefunc(esc_key, 'Escape Key Found!', (0, 0, 1700, 1079)) or imagefunc(esc_key2, 'Escape Key2 Found!', (0, 0, 1700, 1079), variation=.85) and not isMain_menu:
+  
+  isEsckey = imagefunc(esc_key, 'Escape Key Found!', (0, 0, 1700, 1079))
+  isEsckey2 = imagefunc(esc_key2, 'Escape Key2 Found!', (0, 0, 1700, 1079), variation=.85)
+  if isEsckey or isEsckey2 and not isMain_menu:
     keyboard.press(Key.esc)
     keyboard.release(Key.esc)
     time.sleep(1)
@@ -151,7 +153,7 @@ while True:
         time.sleep(default_delay)
         continue
 
-  if (isSpace_key := imagefunc(space_key, 'Space Key Found!')):
+  if (isSpace_key := imagefunc(space_key, 'Space Key Found!') and not (isEsckey or isEsckey2)):
     pyautogui.moveTo(250, 950)
     for _ in range(3):
       keyboard.press(Key.space)
