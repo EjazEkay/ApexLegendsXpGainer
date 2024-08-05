@@ -11,6 +11,7 @@ from pynput.keyboard import Key, Controller
 
 console = Console()
 keyboard = Controller()
+# pyautogui.FAILSAFE = False
 
 # ____________________________________________________ Images Paths ____________________________________________________
 
@@ -114,7 +115,7 @@ while True:
     time.sleep(default_delay)
     continue
 
-  if imagefunc(esc_key, 'Escape Key Found!', (0, 0, 1700, 1079)) or imagefunc(esc_key2, 'Escape Key2 Found!', (0, 0, 1700, 1079)) and not isMain_menu:
+  if imagefunc(esc_key, 'Escape Key Found!', (0, 0, 1700, 1079)) or imagefunc(esc_key2, 'Escape Key2 Found!', (0, 0, 1700, 1079), variation=.85) and not isMain_menu:
     keyboard.press(Key.esc)
     keyboard.release(Key.esc)
     time.sleep(1)
