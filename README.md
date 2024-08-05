@@ -1,6 +1,6 @@
 # Apex Legends Rank Ready Bot
 
-A bot to create rank-ready accounts for Apex Legends, easy to use & works on multiple accounts on single screen, Guaranteed no bans.
+A bot to create rank-ready accounts for Apex Legends, easy to use & works on multiple PCs on single screen, Guaranteed no bans.
 
 ## Description
 
