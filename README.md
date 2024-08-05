@@ -1,6 +1,6 @@
-# Project Title
+# Apex Legends Rank Ready Bot
 
-Apex Legends Rank Ready Bot
+A bot to create rank-ready accounts for Apex Legends, easy to use & works on multiple accounts on single screen, Guaranteed no bans.
 
 ## Description
 
@@ -13,7 +13,7 @@ The Apex Legends Rank Ready Bot is designed to help you automate the process of 
 
 ## Requirements
 - **Screen Resolution:** Must be set to `1920x1080`.
-- **Operating System:** Windows with Remote Desktop enabled.
+- **Operating System:** Windows with Remote Desktop enabled feature for multiple PCs.
 - **PC Configuration:** For multiple PC setups:
     - Disabled limit on local account use of blank passwords.
     - Virtual Display Drivers or Physical Virtual Adaptor required.
@@ -38,40 +38,13 @@ pip install pyautogui rich pynput
 ### Executing program
 
 ```
-cd ../
+py apex.py
 ```
 
 ## Help
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
-
-## Authors
-
-Contributors names and contact info
-
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
-
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
+Discord: [Larry2018](https://discord.com/users/521582566642417684)
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
-## Acknowledgments
-
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+This project is licensed under the Ijaz Ul Haq License - see the [LICENSE.md](https://github.com/EjazEkay/ApexLegendsXpGainer?tab=License-1-ov-file) file for details
