@@ -104,7 +104,7 @@ while True:
     if imagefunc(main_continue, 'MainMenu Continue Button', main_continue_region):
       keyboard.press(Key.space)
       keyboard.release(Key.space)
-    if imagefunc(main_err, 'MainMenu Error/Info', main_err_region):
+    if imagefunc(main_err, 'MainMenu Error/Info', main_err_region, .85):
       keyboard.press(Key.esc)
       keyboard.release(Key.esc)
       time.sleep(default_delay)
