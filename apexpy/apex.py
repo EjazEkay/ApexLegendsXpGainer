@@ -87,7 +87,7 @@ def update_config(max_screens):
 while True:
   try:
     max_screens = int(input("Enter max screens (1-10): "))
-    if 1 <= max_screens <= 10:
+    if 0 <= max_screens <= 10:
       break
     else:
       print("Please enter a number between 1 and 10.")
