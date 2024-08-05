@@ -1,102 +1,207 @@
-#      _    ____  _______  __  _     _____ ____ _____ _   _ ____  ____  
-#     / \  |  _ \| ____\ \/ / | |   | ____/ ___| ____| \ | |  _ \/ ___| 
-#    / _ \ | |_) |  _|  \  /  | |   |  _|| |  _|  _| |  \| | | | \___ \ 
-#   / ___ \|  __/| |___ /  \  | |___| |__| |_| | |___| |\  | |_| |___) |
-#  /_/   \_\_|   |_____/_/\_\ |_____|_____\____|_____|_| \_|____/|____/ 
-
-# ____________________________________________________ [ Imports Section ] ____________________________________________________
-
+# Standard Library Imports
+import os
 import time
+import subprocess
+import configparser
 
+# Third-Party Imports
 import pyautogui
+from rich.console import Console
 from pynput.keyboard import Key, Controller
 
-import funcs as my
-
-# ____________________________________________________ [ Main Section ] ____________________________________________________
-
+console = Console()
 keyboard = Controller()
 
-while True:
-  result = my.getfunc()
-  ( isMain, isError, isEsc, isEsc2, isEsc3, isReady, isAlive, isAlive2, isReque, isShip, isContinue, isContinue2, isWraith, isGibi, isPathy, isMaxlevel, isCheckMainMenu, isCheckMixTape ) = result
+# ____________________________________________________ Images Paths ____________________________________________________
 
-  if isCheckMainMenu:
-    if isMain:
+# Variables / Flags
+default_delay = 1
+
+# --- Images ---
+image_path = './images'
+
+# --- Main Menu ---
+main_menu = f'{image_path}/mainmenu.png'
+main_menu_region = (1600, 960, 1830, 1030)
+main_continue = f'{image_path}/maincontinue.png'
+main_continue_region = (880, 540, 1040, 590)
+main_err = f'{image_path}/mainerr.png'
+main_err_region = (0, 300, 400, 770)
+
+# --- Others ---
+esc_key = f'{image_path}/esckey.png'
+space_key = f'{image_path}/spacekey.png'
+maxlevel = f'{image_path}/maxlevel.png'
+maxlevel_region = (650, 100, 760, 220)
+ready = f'{image_path}/ready.png'
+ready_region = (40, 900, 420, 1040)
+mode = f'{image_path}/mode.png'
+mode_region = (140, 660, 330, 700)
+wraith = f'{image_path}/wraith.png'
+gibi = f'{image_path}/gibi.png'
+lifeline = f'{image_path}/lifeline.png'
+alive = f'{image_path}/alive.png'
+alive_region = (440, 950, 600, 1040)
+reque = f'{image_path}/reque.png'
+reque_region = (1450, 30, 1580, 70)
+ship = f'{image_path}/ship.png'
+# ____________________________________________________ Functions Section ____________________________________________________
+
+def imagefunc(img, name="", region=None, variation=0.9):
+  start_time = time.time()
+  try:
+    image = pyautogui.locateCenterOnScreen(img, grayscale=True, confidence=variation, region=region)
+    elapsed_time = time.time() - start_time
+
+    if image:
+      print(f"Found At: [ {image} ] - Image: {name}")
+      print(f"Time taken: {elapsed_time:.2f} seconds")
+      return image
+
+  except Exception as e:
+    return 0
+
+def activate_window():
+  winSwap = r'./ahk/winSwap.exe'
+  subprocess.run([winSwap], check=True)
+
+def update_config(max_screens):
+  file_path = './ahk/config.ini'
+
+  if os.path.exists(file_path):
+    os.remove(file_path)
+
+  config = configparser.ConfigParser()
+  config.add_section('Results')
+  config.set('Results', 'current_screen', '1')
+  config.set('Results', 'max_screens', str(max_screens))
+
+  with open(file_path, 'w') as configfile:
+    config.write(configfile, space_around_delimiters=False)
+   
+# ____________________________________________________ Main Section ____________________________________________________
+
+while True:
+  try:
+    max_screens = int(input("Enter max screens (1-10): "))
+    if 1 <= max_screens <= 10:
+      break
+    else:
+      print("Please enter a number between 1 and 10.")
+  except ValueError:
+    print("Invalid input. Please enter an integer.")
+
+update_config(max_screens)
+pyautogui.alert('Start The Bot!')
+start_time = time.time()
+
+while True:
+  isMain_menu = imagefunc(main_menu, 'MainMenu Image', main_menu_region)
+  if isMain_menu:
+    if imagefunc(main_continue, 'MainMenu Continue Button', main_continue_region):
       keyboard.press(Key.space)
       keyboard.release(Key.space)
-      time.sleep(0.5)
-
-    if isError:
+    if imagefunc(main_err, 'MainMenu Error/Info', main_err_region):
       keyboard.press(Key.esc)
       keyboard.release(Key.esc)
-      time.sleep(0.5)
+      if imagefunc(main_continue, 'MainMenu Continue Button', main_continue_region):
+        keyboard.press(Key.space)
+        keyboard.release(Key.space)
+    activate_window()
+    time.sleep(default_delay)
+    continue
 
-  if isReady and not isMaxlevel:
-    if isCheckMixTape:
-      keyboard.press(Key.esc)
-      keyboard.release(Key.esc)
-      time.sleep(0.5)
-      keyboard.press(Key.esc)
-      keyboard.release(Key.esc)
-      time.sleep(0.5)
-      pyautogui.moveTo(isReady)
-      time.sleep(.25)
-      pyautogui.click()
-      time.sleep(1)
-
-    if not isCheckMixTape:
-      pyautogui.moveTo(200, 800)
-      time.sleep(.1)
-      pyautogui.click()
-      time.sleep(1)
-      pyautogui.moveTo(1000, 600)
-      time.sleep(.1)
-      pyautogui.click()
-      time.sleep(.1)
-
-  if (isEsc or isEsc2 or isEsc3) and not (isCheckMainMenu or isAlive or isAlive2 or isReque):
+  if imagefunc(esc_key, 'Escape Key Found!') and not isMain_menu:
     keyboard.press(Key.esc)
     keyboard.release(Key.esc)
-    time.sleep(0.5)
-
-  if isReque:
-    keyboard.press('1')
-    keyboard.release('1')
-    time.sleep(0.5)
-
-  if isAlive or isAlive2:
-    keyboard.press('w')
-    time.sleep(2.5)
-    keyboard.release('w')
-    time.sleep(0.5)
-
-  if isShip:
-    pyautogui.moveTo(isShip)
-    keyboard.press(Key.space)
-    keyboard.release(Key.space)
     time.sleep(1)
 
-  if isContinue or isContinue2:
+  if (isReady := imagefunc(ready, 'Ready Button', ready_region)):
+    isMaxlevel = imagefunc(maxlevel, 'Max Level', maxlevel_region)
+    if not isMaxlevel:
+      isMode = imagefunc(mode, 'Mode Button', mode_region)
+      if isMode:
+        for _ in range(2):
+          keyboard.press(Key.esc)
+          keyboard.release(Key.esc)
+          time.sleep(0.5)
+        pyautogui.moveTo(isReady)
+        time.sleep(.2)
+        pyautogui.click()
+        time.sleep(.2)
+        activate_window()
+        time.sleep(default_delay)
+        continue
+      else:
+        pyautogui.moveTo(200, 800)
+        pyautogui.click()
+        time.sleep(1)
+        pyautogui.moveTo(1000, 600)
+        pyautogui.click()
+        time.sleep(1)
+        pyautogui.moveTo(isReady)
+        time.sleep(.2)
+        pyautogui.click()
+        time.sleep(.2)
+        activate_window()
+        time.sleep(default_delay)
+        continue
+
+  if (isSpace_key := imagefunc(space_key, 'Space Key Found!')):
     pyautogui.moveTo(250, 950)
     for _ in range(3):
       keyboard.press(Key.space)
       keyboard.release(Key.space)
-      time.sleep(0.5)
+      time.sleep(0.2)
+    time.sleep(1)
+    activate_window()
+    time.sleep(default_delay)
+    continue
 
-  if (isWraith or isGibi or isPathy) and not (isAlive or isAlive2 or isShip or isReady or isContinue or isEsc or isEsc3 or isCheckMainMenu or isCheckMixTape):
-    pyautogui.moveTo(isPathy)
-    keyboard.press(Key.space)
-    keyboard.release(Key.space)
+  if (isWraith := imagefunc(wraith, 'Wraith Found')):
     pyautogui.moveTo(isWraith)
     keyboard.press(Key.space)
     keyboard.release(Key.space)
+  elif (isGibi := imagefunc(gibi, 'Gibi Found')):
     pyautogui.moveTo(isGibi)
     keyboard.press(Key.space)
     keyboard.release(Key.space)
-    time.sleep(0.5)
-  
-  time.sleep(1)
-  my.activate_window()
+  elif (isLifeline := imagefunc(lifeline, 'Lifeline Found')):
+    pyautogui.moveTo(isLifeline)
+    keyboard.press(Key.space)
+    keyboard.release(Key.space)
 
-  time.sleep(2)
+  if imagefunc(alive, 'Alive inGame', alive_region):
+    keyboard.press('w')
+    time.sleep(1)
+    keyboard.release('w')
+    time.sleep(.2)
+    activate_window()
+    time.sleep(default_delay)
+    continue
+
+  if imagefunc(reque, 'Reque Button', reque_region):
+    keyboard.press('1')
+    keyboard.release('1')
+    time.sleep(0.2)
+    activate_window()
+    time.sleep(default_delay)
+    continue
+
+  if (isShip := imagefunc(ship, 'Ship Found', variation=.8)):
+    pyautogui.moveTo(isShip)
+    keyboard.press(Key.space)
+    keyboard.release(Key.space)
+    time.sleep(.2)
+    activate_window()
+    time.sleep(default_delay)
+    continue
+
+  activate_window()
+  time.sleep(default_delay)
+
+  # Elapsed Time
+  elapsed_time = time.time() - start_time
+  elapsed_minutes = elapsed_time // 60
+  elapsed_seconds = elapsed_time % 60
+  console.print(f'Total Time Elapsed: {int(elapsed_minutes)} minutes {int(elapsed_seconds)} seconds', style='light_green')
