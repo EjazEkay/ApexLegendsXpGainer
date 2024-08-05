@@ -46,6 +46,7 @@ alive_region = (440, 950, 600, 1040)
 reque = f'{image_path}/reque.png'
 reque_region = (1450, 30, 1580, 70)
 ship = f'{image_path}/ship.png'
+
 # ____________________________________________________ Functions Section ____________________________________________________
 
 def imagefunc(img, name="", region=None, variation=0.9):
@@ -113,7 +114,7 @@ while True:
     time.sleep(default_delay)
     continue
 
-  if imagefunc(esc_key, 'Escape Key Found!') or imagefunc(esc_key2, 'Escape Key2 Found!') and not isMain_menu:
+  if imagefunc(esc_key, 'Escape Key Found!', (0, 0, 1700, 1079)) or imagefunc(esc_key2, 'Escape Key2 Found!', (0, 0, 1700, 1079)) and not isMain_menu:
     keyboard.press(Key.esc)
     keyboard.release(Key.esc)
     time.sleep(1)
