@@ -30,6 +30,7 @@ main_err_region = (0, 300, 400, 770)
 
 # --- Others ---
 esc_key = f'{image_path}/esckey.png'
+esc_key2 = f'{image_path}/esckey2.png'
 space_key = f'{image_path}/spacekey.png'
 maxlevel = f'{image_path}/maxlevel.png'
 maxlevel_region = (650, 100, 760, 220)
@@ -111,7 +112,7 @@ while True:
     time.sleep(default_delay)
     continue
 
-  if imagefunc(esc_key, 'Escape Key Found!') and not isMain_menu:
+  if imagefunc(esc_key, 'Escape Key Found!') or imagefunc(esc_key2, 'Escape Key2 Found!') and not isMain_menu:
     keyboard.press(Key.esc)
     keyboard.release(Key.esc)
     time.sleep(1)
@@ -158,12 +159,12 @@ while True:
     time.sleep(default_delay)
     continue
 
-  if (isWraith := imagefunc(wraith, 'Wraith Found')):
-    pyautogui.moveTo(isWraith)
+  if (isGibi := imagefunc(gibi, 'Gibi Found')):
+    pyautogui.moveTo(isGibi)
     keyboard.press(Key.space)
     keyboard.release(Key.space)
-  elif (isGibi := imagefunc(gibi, 'Gibi Found')):
-    pyautogui.moveTo(isGibi)
+  elif (isWraith := imagefunc(wraith, 'Wraith Found')):
+    pyautogui.moveTo(isWraith)
     keyboard.press(Key.space)
     keyboard.release(Key.space)
   elif (isLifeline := imagefunc(lifeline, 'Lifeline Found')):
