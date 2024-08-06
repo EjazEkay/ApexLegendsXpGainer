@@ -13,7 +13,7 @@ console = Console()
 keyboard = Controller()
 # pyautogui.FAILSAFE = False # Enable it if you get Error of "FAILSAFE" multiple times when bot is running
 
-# ____________________________________________________ Images Paths ____________________________________________________
+# ____________________________________________________ Intro ____________________________________________________
 
 def print_intro():
   print("#########################################")
