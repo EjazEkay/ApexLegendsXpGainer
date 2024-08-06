@@ -11,12 +11,21 @@ from pynput.keyboard import Key, Controller
 
 console = Console()
 keyboard = Controller()
-# pyautogui.FAILSAFE = False
+# pyautogui.FAILSAFE = False # Enable it if you get Error of "FAILSAFE" multiple times when bot is running
+
+# ____________________________________________________ Images Paths ____________________________________________________
+
+def print_intro():
+  print("#########################################")
+  print("#         ApexLegends Xp Gainer         #")
+  print("#               Larry2018               #")
+  print("#########################################")
+print_intro()
 
 # ____________________________________________________ Images Paths ____________________________________________________
 
 # Variables / Flags
-default_delay = 1
+default_delay = 1 # Bot Delay between every next search / window swap
 
 # --- Images ---
 image_path = './images'
@@ -86,16 +95,16 @@ def update_config(max_screens):
 
 while True:
   try:
-    max_screens = int(input("Enter max screens (1-10): "))
+    max_screens = int(input("Enter max screens (1-10) - [0 For Single Screen]: "))
     if 0 <= max_screens <= 10:
       break
     else:
-      print("Please enter a number between 1 and 10.")
+      print("Please enter a number between (1-10) or 0")
   except ValueError:
     print("Invalid input. Please enter an integer.")
 
 update_config(max_screens)
-pyautogui.alert('Start The Bot!')
+pyautogui.alert('Start The Bot!\nNote: i havent checked that the single screen is safe to use or not, use it on your own risk')
 start_time = time.time()
 
 while True:
