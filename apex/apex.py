@@ -74,11 +74,11 @@ def imagefunc(img, name="", region=None, variation=0.9):
     return 0
 
 def activate_window():
-  winSwap = r'./ahk/winSwap.exe'
+  winSwap = r'../common/winSwap.exe'
   subprocess.run([winSwap], check=True)
 
 def update_config(max_screens):
-  file_path = './ahk/config.ini'
+  file_path = '../common/config.ini'
 
   if os.path.exists(file_path):
     os.remove(file_path)
