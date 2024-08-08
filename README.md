@@ -1,4 +1,4 @@
-# Apex Legends Rank Ready Bot
+# Rank Ready Bot
 
 A bot to create rank-ready accounts, easy to use & works on multiple PCs on single screen.
 
