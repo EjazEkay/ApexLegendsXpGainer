@@ -34,7 +34,7 @@ image_path = './images'
 main_menu = f'{image_path}/mainmenu.png'
 main_menu_region = (1600, 960, 1830, 1030)
 main_continue = f'{image_path}/maincontinue.png'
-main_continue_region = (880, 540, 1040, 590)
+main_continue_region = (280, 270, 540, 375)
 main_err = f'{image_path}/mainerr.png'
 main_err_region = (0, 300, 400, 770)
 
@@ -47,7 +47,7 @@ maxlevel_region = (650, 100, 760, 220)
 ready = f'{image_path}/ready.png'
 ready_region = (40, 900, 420, 1040)
 mode = f'{image_path}/mode.png'
-mode_region = (140, 660, 330, 700)
+mode_region = (0, 660, 400, 900)
 wraith = f'{image_path}/wraith.png'
 gibi = f'{image_path}/gibi.png'
 lifeline = f'{image_path}/lifeline.png'
@@ -134,8 +134,8 @@ while True:
   if (isReady := imagefunc(ready, 'Ready Button', ready_region)):
     isMaxlevel = imagefunc(maxlevel, 'Max Level', maxlevel_region)
     if not isMaxlevel:
-      isMode = imagefunc(mode, 'Mode Button', mode_region)
-      if isMode:
+      isMode = imagefunc(mode, 'Mode Button', mode_region, .85)
+      if not isMode:
         for _ in range(2):
           keyboard.press(Key.esc)
           keyboard.release(Key.esc)
@@ -164,7 +164,7 @@ while True:
 
   if (isSpace_key := imagefunc(space_key, 'Space Key Found!') and not (isEsckey or isEsckey2)):
     pyautogui.moveTo(250, 950)
-    for _ in range(3):
+    for _ in range(2):
       keyboard.press(Key.space)
       keyboard.release(Key.space)
       time.sleep(0.2)
