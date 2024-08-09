@@ -41,6 +41,8 @@ main_err_region = (0, 300, 400, 770)
 # --- Others ---
 esc_key = f'{image_path}/esckey.png'
 esc_key2 = f'{image_path}/esckey2.png'
+esc_key3 = f'{image_path}/esckey3.png'
+esc_key4 = f'{image_path}/esckey4.png'
 space_key = f'{image_path}/spacekey.png'
 maxlevel = f'{image_path}/maxlevel.png'
 maxlevel_region = (650, 100, 760, 220)
@@ -126,7 +128,9 @@ while True:
   
   isEsckey = imagefunc(esc_key, 'Escape Key Found!', (0, 0, 1700, 1079))
   isEsckey2 = imagefunc(esc_key2, 'Escape Key2 Found!', (0, 0, 1700, 1079), variation=.85)
-  if isEsckey or isEsckey2 and not isMain_menu:
+  isEsckey3 = imagefunc(esc_key3, 'Escape Key Found!')
+  isEsckey4 = imagefunc(esc_key4, 'Escape Key Found!')
+  if (isEsckey or isEsckey2 or isEsckey3 or isEsckey4) and not isMain_menu:
     keyboard.press(Key.esc)
     keyboard.release(Key.esc)
     time.sleep(1)
@@ -143,7 +147,7 @@ while True:
         pyautogui.moveTo(isReady)
         time.sleep(.2)
         pyautogui.click()
-        time.sleep(.2)
+        time.sleep(default_delay)
         activate_window()
         time.sleep(default_delay)
         continue
@@ -157,12 +161,12 @@ while True:
         pyautogui.moveTo(isReady)
         time.sleep(.2)
         pyautogui.click()
-        time.sleep(.2)
+        time.sleep(default_delay)
         activate_window()
         time.sleep(default_delay)
         continue
 
-  if (isSpace_key := imagefunc(space_key, 'Space Key Found!') and not (isEsckey or isEsckey2)):
+  if (imagefunc(space_key, 'Space Key Found!') and not (isEsckey or isEsckey2 or isEsckey3 or isEsckey4)):
     pyautogui.moveTo(250, 950)
     for _ in range(2):
       keyboard.press(Key.space)
