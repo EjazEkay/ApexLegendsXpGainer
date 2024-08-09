@@ -1,10 +1,10 @@
-# Apex Legends Rank Ready Bot
+# Rank Ready Bot
 
-A bot to create rank-ready accounts for Apex Legends, easy to use & works on multiple PCs on single screen.
+A bot to create rank-ready accounts, easy to use & works on multiple PCs on single screen.
 
 ## Description
 
-The Apex Legends Rank Ready Bot is designed to help you automate the process of leveling up your Apex Legends account. It works on both single PC and multiple PC setups, making it flexible for various configurations. The bot will automatically progress your account to the maximum rank and stop once the maximum level is reached
+The Rank Ready Bot is designed to help you automate the process of leveling up your Apex Legends account. It works on both single PC and multiple PC setups, making it flexible for various configurations. The bot will automatically progress your account to the maximum rank and stop once the maximum level is reached
 
 ## Features
 
@@ -38,7 +38,9 @@ pip install pyautogui rich pynput
 ### Executing program
 
 ```
-py apex.py
+py apex.py 
+or
+py valorant.py
 ```
 
 ## Help
