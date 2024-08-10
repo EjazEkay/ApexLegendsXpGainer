@@ -166,7 +166,7 @@ while True:
         time.sleep(default_delay)
         continue
 
-  if (imagefunc(space_key, 'Space Key Found!') and not (isEsckey or isEsckey2 or isEsckey3 or isEsckey4)):
+  if (imagefunc(space_key, 'Space Key Found!', variation=.85) and not (isEsckey or isEsckey2 or isEsckey3 or isEsckey4)):
     pyautogui.moveTo(250, 950)
     for _ in range(2):
       keyboard.press(Key.space)
@@ -202,7 +202,7 @@ while True:
   if imagefunc(reque, 'Reque Button', reque_region):
     keyboard.press('1')
     keyboard.release('1')
-    time.sleep(0.2)
+    time.sleep(default_delay)
     activate_window()
     time.sleep(default_delay)
     continue
@@ -211,7 +211,7 @@ while True:
     pyautogui.moveTo(isShip)
     keyboard.press(Key.space)
     keyboard.release(Key.space)
-    time.sleep(.2)
+    time.sleep(default_delay)
     activate_window()
     time.sleep(default_delay)
     continue
