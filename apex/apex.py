@@ -48,6 +48,8 @@ maxlevel = f'{image_path}/maxlevel.png'
 maxlevel_region = (650, 100, 760, 220)
 ready = f'{image_path}/ready.png'
 ready_region = (40, 900, 420, 1040)
+ready_active = f'{image_path}/cancel.png'
+ready_active_region = (40, 900, 420, 1040)
 mode = f'{image_path}/mode.png'
 mode_region = (0, 660, 400, 900)
 wraith = f'{image_path}/wraith.png'
@@ -165,13 +167,24 @@ while True:
         activate_window()
         time.sleep(default_delay)
         continue
-
+  elif (isReady_active := imagefunc(ready_active, 'Ready Active Button', ready_active_region)):
+    isMode = imagefunc(mode, 'Mode Button', mode_region, .85)
+    if isMode:
+      pyautogui.moveTo(200, 800)
+      pyautogui.click()
+      time.sleep(1)
+      pyautogui.moveTo(1000, 600)
+      pyautogui.click()
+      time.sleep(default_delay)
+      activate_window()
+      time.sleep(default_delay)
+      
   if (imagefunc(space_key, 'Space Key Found!', variation=.85) and not (isEsckey or isEsckey2 or isEsckey3 or isEsckey4)):
     pyautogui.moveTo(250, 950)
     for _ in range(2):
       keyboard.press(Key.space)
       keyboard.release(Key.space)
-      time.sleep(0.2)
+      time.sleep(.2)
     time.sleep(1)
     activate_window()
     time.sleep(default_delay)
