@@ -32,7 +32,7 @@ The Rank Ready Bot is designed to help you automate the process of leveling up y
 ### Installing
 
 ```
-pip install pyautogui rich pynput
+pip install pyautogui rich pynput opencv-python
 ```
 
 ### Executing program
